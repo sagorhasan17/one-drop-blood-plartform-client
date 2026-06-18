@@ -1,5 +1,3 @@
-import Footer from "@/components/shared/footer/Footer";
-import Navbar from "@/components/shared/navbar/Navbar";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 
@@ -23,11 +21,9 @@ export default function RootLayout({ children }) {
       data-theme="dark"
     >
       <body className={`${poppins.className} min-h-screen bg-background text-foreground flex flex-col`}>
-        <Navbar />
         <main className="flex-1">
           {children}
         </main>
-        <Footer />
       </body>
     </html>
   );

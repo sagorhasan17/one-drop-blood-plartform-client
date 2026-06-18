@@ -28,7 +28,8 @@ const Footer = () => {
 
               <h2 className="text-2xl font-bold">
                 <span className="text-red-500">One</span>
-                <span> Drop Blood</span>
+                <span>Drop</span>
+                <span> Blood</span>
               </h2>
             </div>
 

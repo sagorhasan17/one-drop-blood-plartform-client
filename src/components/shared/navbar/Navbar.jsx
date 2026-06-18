@@ -32,9 +32,9 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-md">
       <div className="container mx-auto px-4 py-4">
-        <nav className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/40 px-6 py-4">
+        <nav className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/30 px-6 py-4">
           {/* Logo */}
           <Link href="/">
             <div className="flex items-center">
