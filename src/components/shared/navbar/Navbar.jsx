@@ -7,6 +7,7 @@ import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 
+import { authClient } from "@/lib/auth-client";
 import NavLink from "./NavLink";
 
 const navLinks = [
@@ -30,6 +31,9 @@ const navLinks = [
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const userInfo = authClient.useSession();
+  const user = userInfo.data?.user;
+  console.log("User info in Navbar:", user);
 
   return (
     <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-md">
@@ -71,10 +75,7 @@ const Navbar = () => {
           {/* Desktop Login */}
           <div className="hidden lg:flex items-center">
             <Link href="/login">
-              <Button
-                radius="full"
-                className="bg-red-600 text-xl py-6 hover:bg-red-700 text-white font-semibold"
-              >
+              <Button className="bg-red-600 text-xl py-6 hover:bg-red-700 text-white font-semibold px-6 rounded-md">
                 <FiLogIn />
                 Login
               </Button>

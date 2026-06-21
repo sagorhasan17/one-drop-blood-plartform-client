@@ -72,34 +72,34 @@ const Banner = () => {
       <div className="container relative z-20 mx-auto -mt-20 px-4">
         <div className="grid gap-6 md:grid-cols-3">
           {/* Card 1 */}
-          <div className="rounded-3xl border border-white/10 bg-white p-8 text-center shadow-xl">
+          <div className="rounded-3xl border border-white/10 bg-white/20 p-8 text-center shadow-xl">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-100">
               <FaUsers className="text-2xl text-red-500" />
             </div>
 
-            <h3 className="text-4xl font-bold text-slate-900">500+</h3>
+            <h3 className="text-4xl font-bold text-white/40">500+</h3>
 
             <p className="mt-2 text-gray-500">Active Donors</p>
           </div>
 
           {/* Card 2 */}
-          <div className="rounded-3xl border border-white/10 bg-white p-8 text-center shadow-xl">
+          <div className="rounded-3xl border border-white/10 bg-white/20 p-8 text-center shadow-xl">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-100">
               <FaHandHoldingHeart className="text-2xl text-red-500" />
             </div>
 
-            <h3 className="text-4xl font-bold text-slate-900">1,200+</h3>
+            <h3 className="text-4xl font-bold text-white/40">1,200+</h3>
 
             <p className="mt-2 text-gray-500">Lives Helped</p>
           </div>
 
           {/* Card 3 */}
-          <div className="rounded-3xl border border-white/10 bg-white p-8 text-center shadow-xl">
+          <div className="rounded-3xl border border-white/10 bg-white/20 p-8 text-center shadow-xl">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-red-100">
               <FaTint className="text-2xl text-red-500" />
             </div>
 
-            <h3 className="text-4xl font-bold text-slate-900">150+</h3>
+            <h3 className="text-4xl font-bold text-white/40">150+</h3>
 
             <p className="mt-2 text-gray-500">Blood Requests</p>
           </div>

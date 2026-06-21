@@ -9,21 +9,20 @@ const poppins = Poppins({
 
 export const metadata = {
   title: "One Drop Blood",
-  description: "Blood Donation Platform",
+  description: "Save Lives Through Blood Donation",
+
+  icons: {
+    icon: "/oneDropLogo.png",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className="dark"
-      data-theme="dark"
-    >
-      <body className={`${poppins.className} min-h-screen bg-background text-foreground flex flex-col`}>
-        <main className="flex-1">
-          {children}
-        </main>
+    <html lang="en" suppressHydrationWarning className="dark" data-theme="dark">
+      <body
+        className={`${poppins.className} min-h-screen bg-background text-foreground flex flex-col`}
+      >
+        <main className="flex-1">{children}</main>
       </body>
     </html>
   );
