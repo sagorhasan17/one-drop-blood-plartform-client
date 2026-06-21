@@ -44,14 +44,17 @@ const ProfileModal = ({ user }) => {
 
           {/* Menu */}
           <div className="mt-4 space-y-2">
-            <Link href="/dashboard">
-              <div className="flex h-12 w-full cursor-pointer items-center gap-3 rounded-xl px-4 text-default-700 transition-all duration-200 hover:bg-white/20 hover:text-red-500">
+            <Link href="/dashboard/donor">
+              <button
+                slot="close"
+                className="flex h-12 w-full cursor-pointer items-center gap-3 rounded-xl px-4 text-default-700 transition-all duration-200 hover:bg-white/20 hover:text-red-500"
+              >
                 <MdDashboardCustomize size={20} />
-                <span className="font-medium">Dashboard</span>
-              </div>
+                Dashboard
+              </button>
             </Link>
             <button
-              type="button"
+              slot="close "
               onClick={handleLogout}
               className="flex h-12 w-full cursor-pointer items-center gap-3 rounded-xl px-4 text-red-500 transition-all duration-200 hover:bg-white/20 hover:text-red-700"
             >

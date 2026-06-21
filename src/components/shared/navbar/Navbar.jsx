@@ -32,9 +32,14 @@ const navLinks = [
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const userInfo = authClient.useSession();
-  const user = userInfo.data?.user;
-  console.log("User info in Navbar:", user);
+  const { data, isPending } = authClient.useSession();
+  const user = data?.user;
+
+  if (isPending) {
+    return (
+      <div className="h-10 w-10 animate-pulse rounded-full bg-default-200" />
+    );
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-md">
@@ -55,7 +60,7 @@ const Navbar = () => {
               <h1 className="text-xl lg:text-2xl font-bold">
                 <span className="text-red-500">One</span>
                 <span>Drop</span>
-                <span className="text-white"> Blood</span>
+                {/* <span className="text-white"> Blood</span> */}
               </h1>
             </div>
           </Link>

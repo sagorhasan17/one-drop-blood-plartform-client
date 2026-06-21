@@ -1,12 +1,8 @@
-import dns from "dns";
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
-
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-
-
-
+import dns from "dns";
 import { MongoClient } from "mongodb";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db("oneDropBloodDatabase");
@@ -43,6 +39,14 @@ export const auth = betterAuth({
       profilePhoto: {
         type: "string",
         required: false,
+      },
+      role: {
+        type: "string",
+        default: "donor",
+      },
+      status: {
+        type: "string",
+        default: "pending",
       },
     },
   },

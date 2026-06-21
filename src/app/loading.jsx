@@ -22,7 +22,7 @@ const RootLoadingPage = () => {
         {/* Loading Text */}
         <h2 className="mt-8 text-3xl font-bold">
           <span className="text-red-500">One</span>
-          <span>Drop Blood</span>
+          <span>Drop</span>
         </h2>
 
         <p className="mt-2 text-default-500">

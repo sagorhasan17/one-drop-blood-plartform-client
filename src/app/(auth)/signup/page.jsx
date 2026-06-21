@@ -3,9 +3,10 @@
 import { districts } from "@/data/districts";
 import { upazilas } from "@/data/upazilas";
 import { authClient } from "@/lib/auth-client";
-import { Button } from "@heroui/react";
+import { Button, toast } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   FiCamera,
@@ -112,21 +113,23 @@ const SignUpPage = () => {
         password: formData.get("password"),
         confirmPassword: formData.get("confirmPassword"),
         profilePhoto: profilePhotoUrl,
-        callbackURL: "/",
+        role: "donor", // default role
+        status: "pending", // default status
       });
-      console.log("Registration response:", { data, error });
-      if (error) {
-        alert("Registration failed: " + error.message);
-      } else {
-        alert(
+
+      if (!error) {
+        toast.success(
           "Registration successful! Please check your email to verify your account.",
         );
+
+        console.log("Registration successful:", data);
       }
     } catch (error) {
       console.error("Error during registration:", error);
       alert("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
+      redirect("/");
     }
   };
 
