@@ -4,12 +4,31 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import { Button } from "@heroui/react";
+import { Button, toast } from "@heroui/react";
 
+import { authClient } from "@/lib/auth-client";
 import { FiEye, FiEyeOff, FiLock, FiMail, FiShield } from "react-icons/fi";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const inputData = Object.fromEntries(formData.entries());
+    console.log("Form Data:", inputData);
+
+    const { data, error } = await authClient.signIn.email({
+      email: inputData.email, // required
+      password: inputData.password, // required
+      rememberMe: inputData.remember === "on", // optional
+      callbackURL: "/",
+    });
+    if (!error) {
+      toast.success("Login successful!");
+      console.log("Login successful:", data);
+    }
+  };
 
   return (
     <section className="flex min-h-screen items-center justify-center px-4 py-8">
@@ -84,7 +103,7 @@ const LoginPage = () => {
           </div>
 
           {/* Form */}
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             {/* Email */}
             <div>
               <label className="mb-2 block text-sm font-semibold">
@@ -96,6 +115,7 @@ const LoginPage = () => {
 
                 <input
                   type="email"
+                  name="email"
                   placeholder="user@example.com"
                   className="h-14 w-full rounded-2xl border border-default-200 bg-transparent pl-12 pr-4 text-sm outline-none transition-all focus:border-red-500"
                 />
@@ -120,6 +140,7 @@ const LoginPage = () => {
 
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
                   placeholder="Enter your password"
                   className="h-14 w-full rounded-2xl border border-default-200 bg-transparent pl-12 pr-12 text-sm outline-none transition-all focus:border-red-500"
                 />
@@ -140,13 +161,18 @@ const LoginPage = () => {
 
             {/* Remember Me */}
             <div className="flex items-center gap-2 text-sm">
-              <input type="checkbox" className="accent-red-500" />
+              <input
+                type="checkbox"
+                name="remember"
+                className="accent-red-500"
+              />
               <span>Remember me</span>
             </div>
 
             {/* Login Button */}
             <Button
               fullWidth
+              type="submit"
               className="h-14 rounded-2xl bg-red-600 text-base font-semibold text-white hover:bg-red-700"
             >
               Log In
@@ -160,7 +186,7 @@ const LoginPage = () => {
               href="/signup"
               className="font-semibold text-red-500 hover:text-red-400"
             >
-               Register to Donate
+              Register to Donate
             </Link>
           </p>
 

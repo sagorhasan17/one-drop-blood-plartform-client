@@ -27,6 +27,7 @@ const SignUpPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -59,48 +60,73 @@ const SignUpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const submissionData = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      gender: formData.get("gender"),
-      district: selectedDistrict,
-      upazila: formData.get("upazila"),
-      bloodGroup: formData.get("bloodGroup"),
-      password: formData.get("password"),
-      confirmPassword: formData.get("confirmPassword"),
-      profilePhoto: formData.get("profilePhoto"),
-    };
-    if (!submissionData.bloodGroup) {
+    if (!selectedBloodGroup) {
       alert("Please select a blood group.");
       return;
     }
-
-    if (submissionData.password !== submissionData.confirmPassword) {
+    if (formData.get("password") !== formData.get("confirmPassword")) {
       alert("Passwords do not match.");
       return;
     }
+    setIsLoading(true);
+    try {
+      let profilePhotoUrl = "";
+      const imageFile = formData.get("profilePhoto");
+      //size check for image file (max 3MB)
+      if (imageFile && imageFile.size > 3 * 1024 * 1024) {
+        alert("Profile photo must be less than 3MB.");
+        setIsLoading(false);
+        return;
+      }
+      if (imageFile && imageFile.size > 0) {
+        const imageFormData = new FormData();
+        imageFormData.append("image", imageFile);
+        const imgbbApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
 
-    const { data, error } = await authClient.signUp.email({
-      name: submissionData.name,
-      email: submissionData.email,
-      phone: submissionData.phone,
-      gender: submissionData.gender,
-      district: submissionData.district,
-      upazila: submissionData.upazila,
-      bloodGroup: submissionData.bloodGroup,
-      password: submissionData.password,
-      confirmPassword: submissionData.confirmPassword,
-      profilePhoto: submissionData.profilePhoto,
-      callbackURL: "/",
-    });
-    console.log("Registration response:", { data, error });
-    if (error) {
-      console.log("Registration failed: " + error.message);
-    } else {
-      alert(
-        "Registration successful! Please check your email to verify your account.",
-      );
+        const response = await fetch(
+          `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+          {
+            method: "POST",
+            body: imageFormData,
+          },
+        );
+        const imgData = await response.json();
+        if (imgData.success) {
+          profilePhotoUrl = imgData.data.display_url;
+          console.log("Image uploaded successfully:", profilePhotoUrl);
+        } else {
+          alert("Failed to upload profile photo. Please try again.");
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      const { data, error } = await authClient.signUp.email({
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        gender: formData.get("gender"),
+        district: selectedDistrict,
+        upazila: formData.get("upazila"),
+        bloodGroup: selectedBloodGroup,
+        password: formData.get("password"),
+        confirmPassword: formData.get("confirmPassword"),
+        profilePhoto: profilePhotoUrl,
+        callbackURL: "/",
+      });
+      console.log("Registration response:", { data, error });
+      if (error) {
+        alert("Registration failed: " + error.message);
+      } else {
+        alert(
+          "Registration successful! Please check your email to verify your account.",
+        );
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -353,9 +379,10 @@ const SignUpPage = () => {
             <Button
               type="submit"
               fullWidth
-              className="h-14 bg-red-600 text-lg font-semibold text-white hover:bg-red-700"
+              disabled={isLoading}
+              className="h-14 bg-red-600 text-lg font-semibold text-white hover:bg-red-700 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Complete Registration
+              {isLoading ? "Processing..." : "Complete Registration"}
             </Button>
           </form>
 

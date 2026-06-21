@@ -7,6 +7,7 @@ import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 
+import ProfileModal from "@/components/modal/ProfileModal";
 import { authClient } from "@/lib/auth-client";
 import NavLink from "./NavLink";
 
@@ -74,12 +75,21 @@ const Navbar = () => {
 
           {/* Desktop Login */}
           <div className="hidden lg:flex items-center">
-            <Link href="/login">
-              <Button className="bg-red-600 text-xl py-6 hover:bg-red-700 text-white font-semibold px-6 rounded-md">
-                <FiLogIn />
-                Login
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <ProfileModal user={user} />
+              </>
+            ) : (
+              <Link href="/login">
+                <Button
+                  radius="full"
+                  className="bg-red-600 hover:bg-red-700 text-white font-semibold"
+                >
+                  <FiLogIn className="mr-1" />
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Toggle */}
@@ -105,16 +115,22 @@ const Navbar = () => {
                 </NavLink>
               ))}
 
-              <Button
-                as={Link}
-                href="/login"
-                radius="full"
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold w-full mt-2"
-                onPress={() => setIsMenuOpen(false)}
-              >
-                <FiLogIn className="mr-1" />
-                Login
-              </Button>
+              {user ? (
+                <>
+                  <ProfileModal user={user} />
+                </>
+              ) : (
+                <Link href="/login">
+                  <Button
+                    radius="full"
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold w-full mt-2"
+                    onPress={() => setIsMenuOpen(false)}
+                  >
+                    <FiLogIn className="mr-1" />
+                    Login
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         )}
