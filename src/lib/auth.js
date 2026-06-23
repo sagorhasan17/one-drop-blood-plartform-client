@@ -1,8 +1,6 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import dns from "dns";
 import { MongoClient } from "mongodb";
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const client = new MongoClient(process.env.MONGODB_URI);
 const db = client.db("oneDropBloodDatabase");

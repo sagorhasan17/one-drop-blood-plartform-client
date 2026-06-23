@@ -2,8 +2,10 @@
 
 import { districts } from "@/data/districts";
 import { upazilas } from "@/data/upazilas";
+import { createDonor } from "@/lib/api/donor";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import {
   FiCalendar,
@@ -17,6 +19,7 @@ import {
 import { LuHospital } from "react-icons/lu";
 
 const CreateNewDonorRequestPage = () => {
+  const [isSubmit, setIsSubmit] = useState(false);
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const { data, isPending } = authClient.useSession();
@@ -38,19 +41,28 @@ const CreateNewDonorRequestPage = () => {
     setFilteredUpazilas(matchedUpazilas);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const formValues = Object.fromEntries(formData.entries());
-
-    const finalSubmissionData = {
-      requesterName: user?.name,
-      requesterEmail: user?.email,
-      districtName: selectedDistrict,
-      ...formValues,
-    };
-    console.log("Form Submitted", finalSubmissionData);
-    // TODO: Add your submit logic here
+    setIsSubmit(true);
+    try {
+      const formData = new FormData(e.currentTarget);
+      const formValues = Object.fromEntries(formData.entries());
+      const finalSubmissionData = {
+        requesterName: user?.name,
+        requesterEmail: user?.email,
+        districtName: selectedDistrict,
+        createdAt: new Date().toISOString(),
+        ...formValues,
+      };
+      const payload = await createDonor(finalSubmissionData);
+      if (payload.insertedId) {
+        setIsSubmit(false);
+        console.log("Form Submitted Successfully :)", payload);
+        redirect("/dashboard/donor/request-donor");
+      }
+    } catch (error) {
+      console.error("Create Donor Error:", error);
+    }
   };
 
   return (
@@ -293,10 +305,11 @@ const CreateNewDonorRequestPage = () => {
             type="submit"
             color="danger"
             size="lg"
+            isDisabled={isSubmit}
             className="w-full font-bold md:w-auto md:px-10"
             startContent={<FiDroplet />}
           >
-            Submit Blood Request
+            {isSubmit ? "Submitting..." : "Request Blood Donation"}
           </Button>
         </div>
       </form>

@@ -18,7 +18,7 @@ const navLinks = [
   },
   {
     label: "Donation Requests",
-    href: "/requests",
+    href: "/donation-requests",
   },
   {
     label: "Search Donors",
