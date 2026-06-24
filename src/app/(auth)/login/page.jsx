@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
 import { Button, toast } from "@heroui/react";
 
 import { authClient } from "@/lib/auth-client";
@@ -11,7 +10,6 @@ import { FiEye, FiEyeOff, FiLock, FiMail, FiShield } from "react-icons/fi";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);

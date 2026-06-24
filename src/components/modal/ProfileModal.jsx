@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
 import { Avatar, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
-
 import { authClient } from "@/lib/auth-client";
 import { FiLogOut } from "react-icons/fi";
 import { MdDashboardCustomize } from "react-icons/md";

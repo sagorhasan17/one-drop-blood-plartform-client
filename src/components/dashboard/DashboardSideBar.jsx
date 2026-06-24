@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi";
+import { LuHandHelping } from "react-icons/lu";
 import { MdDashboardCustomize } from "react-icons/md";
 
 export function DashboardSideBar() {
@@ -21,6 +22,11 @@ export function DashboardSideBar() {
       icon: HiPencil,
       label: "Add Request",
       href: "/dashboard/donor/request-donor/new",
+    },
+    {
+      icon: LuHandHelping,
+      label: "My Requests",
+      href: "/dashboard/donor/request-donor/my-requests",
     },
   ];
 

@@ -14,7 +14,6 @@ const DonorPage = () => {
       </div>
     );
   }
-  console.log("DonorPage user:", user);
   return (
     <section className="space-y-8">
       {/* Welcome Banner */}

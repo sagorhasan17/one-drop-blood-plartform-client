@@ -26,7 +26,7 @@ export function DonateModal({
       setIsLoading(true);
 
       const response = await fetch(
-        `http://localhost:8000/api/donate-request/${requestId}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/donate-request/${requestId}`,
         {
           method: "PATCH",
           headers: {
