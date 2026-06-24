@@ -1,6 +1,7 @@
 "use client";
 
-import { Avatar, Button, Chip, Table } from "@heroui/react";
+import { Button, Chip, Table } from "@heroui/react";
+import Link from "next/link";
 import { FiEdit, FiEye, FiMail, FiTrash2, FiUser } from "react-icons/fi";
 import { MdOutlineLocationOn } from "react-icons/md";
 
@@ -127,14 +128,18 @@ export default function MyRequestsTable({ users = [] }) {
                         <FiEye size={16} />
                       </Button>
 
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="ghost"
-                        aria-label="Edit"
+                      <Link
+                        href={`/dashboard/donor/request-donor/my-requests/${user._id}`}
                       >
-                        <FiEdit size={16} />
-                      </Button>
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="ghost"
+                          aria-label="Edit"
+                        >
+                          <FiEdit size={16} />
+                        </Button>
+                      </Link>
 
                       <Button
                         isIconOnly

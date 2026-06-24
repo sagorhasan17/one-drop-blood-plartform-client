@@ -16,7 +16,6 @@ const MyRequestsPage = async () => {
   );
 
   const data = await res.json();
-  console.log("data from my requests", data);
 
   return (
     <div className="space-y-8">
