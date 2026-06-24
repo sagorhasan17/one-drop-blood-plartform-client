@@ -44,7 +44,7 @@ const Banner = () => {
 
           {/* Buttons */}
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <Link href="/register">
+            <Link href="/signup">
               <Button
                 size="lg"
                 radius="full"

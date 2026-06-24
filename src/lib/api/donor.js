@@ -26,3 +26,26 @@ export const getAllDonorsRequest = async () => {
     };
   }
 };
+
+//get DonationRequest by Id
+export const getDonorById = async (id) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-donors/${id}`,
+      {
+        cache: "no-store",
+      },
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch donors");
+    }
+    const resData = await res.json();
+    return resData.data;
+  } catch (error) {
+    console.log("Error fetching donors:", error);
+    return {
+      success: false,
+      data: [],
+    };
+  }
+};

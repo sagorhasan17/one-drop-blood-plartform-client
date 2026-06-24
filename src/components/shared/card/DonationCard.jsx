@@ -19,26 +19,57 @@ const DonationCard = ({ request }) => {
       })
     : "Date not specified";
 
+  const statusConfig = {
+    pending: {
+      bg: "bg-amber-100",
+      text: "text-amber-700",
+      border: "border-amber-200",
+      dot: "bg-amber-500",
+    },
+    inprogress: {
+      bg: "bg-blue-100",
+      text: "text-blue-700",
+      border: "border-blue-200",
+      dot: "bg-blue-500",
+    },
+    done: {
+      bg: "bg-emerald-100",
+      text: "text-emerald-700",
+      border: "border-emerald-200",
+      dot: "bg-emerald-500",
+    },
+    cancelled: {
+      bg: "bg-red-100",
+      text: "text-red-700",
+      border: "border-red-200",
+      dot: "bg-red-500",
+    },
+  };
   return (
     <div className="h-full">
       {/* Card Container */}
-      <div className="relative flex h-full flex-col overflow-hidden rounded-[28px] bg-white border border-red-50 p-5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_30px_rgba(239,68,68,0.1)] hover:border-red-100">
+      <div className="relative flex h-full flex-col overflow-hidden bg-white border border-red-50 p-5 rounded-br-xl rounded-xl">
         {/* Top Header Section */}
         <div className="flex items-start justify-between">
           <div className="flex h-16 w-16 flex-col items-center justify-center rounded-[20px] bg-linear-to-br from-red-500 via-red-600 to-orange-500 shadow-lg shadow-red-500/25">
             <span className="text-2xl font-black text-white tracking-tight leading-none drop-shadow-md">
-              {request?.bloodGroup || "N/A"}
+              <div className="w-16 h-16 rounded-xl bg-red-500  flex items-center justify-center font-extrabold text-2xl">
+                {request?.bloodGroup || "N/A"}
+              </div>
             </span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-50/80 px-3 py-1.5 border border-orange-100 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-1.5 px-3 rounded-full bg-orange-500/80 border border-orange-100 backdrop-blur-sm">
+            {" "}
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-            </span>
+              {" "}
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>{" "}
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>{" "}
+            </span>{" "}
             <span className="text-[10px] font-bold uppercase tracking-widest text-orange-600">
-              {request?.status || "URGENT"}
-            </span>
+              {" "}
+              {request?.status || "URGENT"}{" "}
+            </span>{" "}
           </div>
         </div>
 
@@ -48,7 +79,7 @@ const DonationCard = ({ request }) => {
             {request?.recipientName || "Unknown Recipient"}
           </h2>
           <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-            Blood Recipient
+            Blood Recipient Information
           </p>
         </div>
 
