@@ -1,20 +1,90 @@
-'use client';
+"use client";
 
-import { Button, Input, Label, Modal, Surface, TextField } from '@heroui/react';
-import { FaArrowRight, FaHandHoldingHeart } from 'react-icons/fa';
-import { FaShieldHeart } from 'react-icons/fa6';
+import { useState } from "react";
+import {
+  Button,
+  Input,
+  Label,
+  Modal,
+  Surface,
+  TextField,
+} from "@heroui/react";
+import { useRouter } from "next/navigation";
+import { FaArrowRight, FaHandHoldingHeart } from "react-icons/fa";
+import { FaShieldHeart } from "react-icons/fa6";
 
-export function DonateModal({user}) {
+export function DonateModal({
+  user,
+  requestId,
+  status = "pending",
+}) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDonate = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await fetch(
+        `http://localhost:8000/api/donate-request/${requestId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            donorId: user?.id,
+            donorName: user?.name,
+            donorEmail: user?.email,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+            "Failed to accept donation request"
+        );
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error("Donate Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const isDisabled = status !== "pending";
+
+  const buttonText =
+    status === "pending"
+      ? "Donate Now"
+      : status === "inprogress"
+      ? "Already Accepted"
+      : status === "done"
+      ? "Donation Completed"
+      : "Request Cancelled";
+
   return (
     <Modal>
       {/* Trigger Button */}
       <Button
         variant="danger"
-        className="w-full h-14 rounded-full border border-red-400/20  text-white font-semibold flex items-center justify-center gap-3 cursor-pointer shadow-lg"
+        isDisabled={isDisabled}
+        className={`w-full h-14 rounded-full font-semibold flex items-center justify-center gap-3 shadow-lg ${
+          isDisabled
+            ? "opacity-60 cursor-not-allowed"
+            : ""
+        }`}
       >
         <FaHandHoldingHeart className="text-lg" />
-        Donate Now
-        <FaArrowRight />
+
+        {buttonText}
+
+        {!isDisabled && <FaArrowRight />}
       </Button>
 
       <Modal.Backdrop className="bg-black/50 backdrop-blur-sm">
@@ -38,21 +108,26 @@ export function DonateModal({user}) {
                   </h2>
 
                   <p className="mt-3 max-w-xs text-sm leading-relaxed text-slate-500">
-                    Please confirm that you are available and willing to donate
-                    for this patient.
+                    Please confirm that you are
+                    available and willing to donate
+                    blood for this patient.
                   </p>
                 </div>
 
-                {/* Form Fields */}
+                {/* Donor Info */}
                 <div className="mt-8 space-y-5">
-                  <TextField name="name" variant="secondary" className="w-full">
+                  <TextField
+                    name="name"
+                    variant="secondary"
+                    className="w-full"
+                  >
                     <Label className="mb-2 text-[11px] font-bold uppercase tracking-[2px] text-slate-400">
                       Donor Name
                     </Label>
 
                     <Input
                       readOnly
-                      value={user.name}
+                      value={user?.name || ""}
                       className="h-14 rounded-2xl border border-slate-200 bg-slate-50"
                     />
                   </TextField>
@@ -68,25 +143,30 @@ export function DonateModal({user}) {
 
                     <Input
                       readOnly
-                      value={user.email}
+                      value={user?.email || ""}
                       className="h-14 rounded-2xl border border-slate-200 bg-slate-50"
                     />
                   </TextField>
                 </div>
 
-                {/* Actions */}
+                {/* Action */}
                 <div className="mt-10 flex flex-col items-center">
                   <Button
                     slot="close"
+                    onClick={handleDonate}
+                    isDisabled={isLoading}
                     variant="danger"
                     className="h-14 w-full rounded-2xl text-base font-bold text-white shadow-xl"
                   >
-                    Confirm & Start
+                    {isLoading
+                      ? "Processing..."
+                      : "Confirm Donation"}
                   </Button>
 
                   <Button
                     slot="close"
                     variant="light"
+                    isDisabled={isLoading}
                     className="mt-5 h-auto bg-transparent p-0 text-sm font-medium text-slate-400 hover:text-slate-700"
                   >
                     I changed my mind

@@ -1,8 +1,8 @@
-import { DonateModal } from '@/components/shared/modal/DonateModal';
-import { getDonorById } from '@/lib/api/donor';
-import { auth } from '@/lib/auth';
-import { Chip } from '@heroui/react';
-import { headers } from 'next/headers';
+import { DonateModal } from "@/components/shared/modal/DonateModal";
+import { getDonorById } from "@/lib/api/donor";
+import { auth } from "@/lib/auth";
+import { Chip } from "@heroui/react";
+import { headers } from "next/headers";
 
 import {
   FaArrowRight,
@@ -13,8 +13,8 @@ import {
   FaMapMarkerAlt,
   FaTint,
   FaUser,
-} from 'react-icons/fa';
-import { FaFilePen } from 'react-icons/fa6';
+} from "react-icons/fa";
+import { FaFilePen } from "react-icons/fa6";
 
 const DonationRequestDetailsPage = async ({ params }) => {
   const { id } = await params;
@@ -23,7 +23,6 @@ const DonationRequestDetailsPage = async ({ params }) => {
     headers: await headers(),
   });
   const user = session.user;
-  console.log(user)
 
   const {
     recipientName,
@@ -34,7 +33,7 @@ const DonationRequestDetailsPage = async ({ params }) => {
     requiredDate,
     requiredTime,
     requestMessage,
-    donationStatus,
+    status,
   } = donorDetails;
 
   return (
@@ -42,29 +41,33 @@ const DonationRequestDetailsPage = async ({ params }) => {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <p className="uppercase text-xs tracking-[4px] text-gray-400 mb-2">Request ID #{id}</p>
+          <p className="uppercase text-xs tracking-[4px] text-gray-400 mb-2">
+            Request ID #{id}
+          </p>
 
           <h1 className="text-4xl md:text-5xl font-black">
             Request <span className="text-red-500">Details</span>
           </h1>
 
-          <p className="text-gray-500 mt-3">View urgency, location and donation requirements.</p>
+          <p className="text-gray-500 mt-3">
+            View urgency, location and donation requirements.
+          </p>
         </div>
 
         {/* Status */}
         <div className="flex justify-center mb-6">
           <Chip
             color={
-              donationStatus === 'done'
-                ? 'success'
-                : donationStatus === 'inprogress'
-                  ? 'warning'
-                  : 'danger'
+              status === "done"
+                ? "success"
+                : status === "inprogress"
+                  ? "warning"
+                  : "danger"
             }
             variant="flat"
             size="lg"
           >
-            {donationStatus || 'Pending'}
+            {status || "Pending"}
           </Chip>
         </div>
 
@@ -134,7 +137,9 @@ const DonationRequestDetailsPage = async ({ params }) => {
                   </div>
 
                   <div>
-                    <p className="uppercase text-xs text-gray-400">Full Address</p>
+                    <p className="uppercase text-xs text-gray-400">
+                      Full Address
+                    </p>
 
                     <h4 className="font-semibold">{fullAddress}</h4>
                   </div>
@@ -154,7 +159,9 @@ const DonationRequestDetailsPage = async ({ params }) => {
                     <FaCalendarAlt className="text-red-500" />
                   </div>
                   <div>
-                    <p className="uppercase text-xs text-gray-400">Required Date</p>
+                    <p className="uppercase text-xs text-gray-400">
+                      Required Date
+                    </p>
                     <h4 className="font-bold">{requiredDate}</h4>
                   </div>
                 </div>
@@ -174,7 +181,9 @@ const DonationRequestDetailsPage = async ({ params }) => {
                   <FaFilePen className="text-green-600 text-xl" />
                 </div>
                 <div>
-                  <p className="uppercase text-xs text-gray-400">Note (Optional)</p>
+                  <p className="uppercase text-xs text-gray-400">
+                    Note (Optional)
+                  </p>
                   <h4 className="font-semibold">{requestMessage}</h4>
                 </div>
               </div>
@@ -183,7 +192,7 @@ const DonationRequestDetailsPage = async ({ params }) => {
 
           {/* Footer */}
           <div className="border-t border-gray-100 p-6">
-            <DonateModal user={user} />
+            <DonateModal user={user} requestId={id} status={status} />
           </div>
         </div>
 

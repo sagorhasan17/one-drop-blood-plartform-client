@@ -11,8 +11,7 @@ import {
 
 const DonationCard = ({ request }) => {
   if (!request) return null;
-  const formattedDate = request?.requiredDate
-    ? new Date(request.requiredDate).toLocaleDateString("en-US", {
+  const formattedDate = request?.requiredDate? new Date(request.requiredDate).toLocaleDateString("en-US", {
         day: "numeric",
         month: "short",
         year: "numeric",
