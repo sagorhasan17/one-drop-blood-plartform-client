@@ -1,12 +1,21 @@
 "use client";
+import { updateMyRequest } from "@/lib/api/request";
 import { Button } from "@heroui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FiArrowLeft, FiMapPin, FiSave, FiUser } from "react-icons/fi";
 import { LuHospital } from "react-icons/lu";
 
 const MyRequestUpdate = ({ requestData }) => {
-  const handleUpdate = (e) => {
-    e.preventDefault();;
+  const router = useRouter();
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    const res = await updateMyRequest(requestData._id, data);
+    if (res.success) {
+      router.push("/dashboard/donor/request-donor/my-requests");
+    }
   };
   return (
     <section className="container mx-auto max-w-5xl px-4 py-12">
@@ -59,6 +68,7 @@ const MyRequestUpdate = ({ requestData }) => {
               </label>
               <input
                 type="text"
+                name="recipientName"
                 defaultValue={requestData?.recipientName}
                 required
                 className="h-14 w-full rounded-2xl border border-transparent bg-default-50 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
@@ -72,6 +82,7 @@ const MyRequestUpdate = ({ requestData }) => {
               </label>
               <input
                 type="text"
+                name="districtName"
                 defaultValue={requestData?.districtName}
                 required
                 className="h-14 w-full rounded-2xl border border-transparent bg-default-50 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
@@ -85,6 +96,7 @@ const MyRequestUpdate = ({ requestData }) => {
               </label>
               <input
                 type="text"
+                name="upazila"
                 defaultValue={requestData?.upazila}
                 required
                 className="h-14 w-full rounded-2xl border border-transparent bg-default-50 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
@@ -98,6 +110,7 @@ const MyRequestUpdate = ({ requestData }) => {
               </label>
               <input
                 type="text"
+                name="hospitalName"
                 defaultValue={requestData?.hospitalName}
                 required
                 className="h-14 w-full rounded-2xl border border-transparent bg-default-50 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
@@ -111,6 +124,7 @@ const MyRequestUpdate = ({ requestData }) => {
                 Address
               </label>
               <textarea
+                name="fullAddress"
                 defaultValue={requestData?.fullAddress}
                 required
                 rows={4}

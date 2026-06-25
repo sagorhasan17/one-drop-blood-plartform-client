@@ -19,3 +19,35 @@ export const getMyRequestsById = async (id) => {
     };
   }
 };
+
+//my request update
+export const updateMyRequest = async (id, data) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/update-my-request/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      throw new Error(result.message || "Failed to update request");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error updating request:", error);
+
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+};

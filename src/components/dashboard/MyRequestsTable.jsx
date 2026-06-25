@@ -119,15 +119,18 @@ export default function MyRequestsTable({ users = [] }) {
 
                   <Table.Cell>
                     <div className="flex justify-end gap-2">
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="ghost"
-                        aria-label="View"
+                      <Link
+                        href={`/dashboard/donation-request-details/${user._id}`}
                       >
-                        <FiEye size={16} />
-                      </Button>
-
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="ghost"
+                          aria-label="View"
+                        >
+                          <FiEye size={16} />
+                        </Button>
+                      </Link>
                       <Link
                         href={`/dashboard/donor/request-donor/my-requests/${user._id}`}
                       >
