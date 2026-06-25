@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { districts } from '@/data/districts';
-import { upazilas } from '@/data/upazilas';
-import { authClient } from '@/lib/auth-client';
-import { Button, toast } from '@heroui/react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { districts } from "@/data/districts";
+import { upazilas } from "@/data/upazilas";
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   FiCamera,
   FiEye,
@@ -17,17 +17,18 @@ import {
   FiMapPin,
   FiPhone,
   FiUser,
-} from 'react-icons/fi';
+} from "react-icons/fi";
+import { toast } from "react-toastify";
 
-const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const SignUpPage = () => {
-  const [preview, setPreview] = useState('');
-  const [selectedBloodGroup, setSelectedBloodGroup] = useState('');
+  const [preview, setPreview] = useState("");
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -36,96 +37,105 @@ const SignUpPage = () => {
     };
   }, [preview]);
 
-  const handleImageChange = e => {
+  const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setPreview(URL.createObjectURL(file));
   };
 
-  const handleDistrictChange = e => {
+  const handleDistrictChange = (e) => {
     const districtId = e.target.value;
     if (!districtId) {
-      setSelectedDistrict('');
+      setSelectedDistrict("");
       setFilteredUpazilas([]);
       return;
     }
     const districtName = e.target.options[e.target.selectedIndex].text;
     setSelectedDistrict(districtName);
     const matchedUpazilas = upazilas.filter(
-      upazila => String(upazila.district_id) === String(districtId)
+      (upazila) => String(upazila.district_id) === String(districtId),
     );
 
     setFilteredUpazilas(matchedUpazilas);
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     if (!selectedBloodGroup) {
-      alert('Please select a blood group.');
+      alert("Please select a blood group.");
       return;
     }
-    if (formData.get('password') !== formData.get('confirmPassword')) {
-      alert('Passwords do not match.');
+    if (formData.get("password") !== formData.get("confirmPassword")) {
+      alert("Passwords do not match.");
       return;
     }
     setIsLoading(true);
     try {
-      let profilePhotoUrl = '';
-      const imageFile = formData.get('profilePhoto');
+      let profilePhotoUrl = "";
+      const imageFile = formData.get("profilePhoto");
       //size check for image file (max 3MB)
       if (imageFile && imageFile.size > 3 * 1024 * 1024) {
-        alert('Profile photo must be less than 3MB.');
+        alert("Profile photo must be less than 3MB.");
         setIsLoading(false);
         return;
       }
       if (imageFile && imageFile.size > 0) {
         const imageFormData = new FormData();
-        imageFormData.append('image', imageFile);
+        imageFormData.append("image", imageFile);
         const imgbbApiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
 
-        const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbApiKey}`, {
-          method: 'POST',
-          body: imageFormData,
-        });
+        const response = await fetch(
+          `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`,
+          {
+            method: "POST",
+            body: imageFormData,
+          },
+        );
         const imgData = await response.json();
         if (imgData.success) {
           profilePhotoUrl = imgData.data.display_url;
-          console.log('Image uploaded successfully:', profilePhotoUrl);
+          console.log("Image uploaded successfully:", profilePhotoUrl);
         } else {
-          alert('Failed to upload profile photo. Please try again.');
+          alert("Failed to upload profile photo. Please try again.");
           setIsLoading(false);
           return;
         }
       }
 
       const { data, error } = await authClient.signUp.email({
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        gender: formData.get('gender'),
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        gender: formData.get("gender"),
         district: selectedDistrict,
-        upazila: formData.get('upazila'),
+        upazila: formData.get("upazila"),
         bloodGroup: selectedBloodGroup,
-        password: formData.get('password'),
-        confirmPassword: formData.get('confirmPassword'),
+        password: formData.get("password"),
+        confirmPassword: formData.get("confirmPassword"),
         profilePhoto: profilePhotoUrl,
-        role: 'donor', // default role
-        status: 'pending', // default status
+        role: "donor", // default role
+        status: "pending", // default status
         donationCount: 0,
       });
 
       if (!error) {
-        toast.success('Registration successful! Please check your email to verify your account.');
-
-        console.log('Registration successful:', data);
+        toast.success("Registration Successful", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        console.log("Registration successful:", data);
       }
     } catch (error) {
-      console.error('Error during registration:', error);
-      alert('An unexpected error occurred. Please try again.');
+      console.error("Error during registration:", error);
+      alert("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
-      redirect('/');
+      redirect("/");
     }
   };
 
@@ -135,7 +145,9 @@ const SignUpPage = () => {
         <div className="mx-auto max-w-5xl rounded-3xl border border-default-200 bg-content1 p-6 shadow-xl md:p-10">
           {/* Header */}
           <div className="mb-10 text-center">
-            <h1 className="text-4xl font-black text-red-500">Join the Lifesaving Community</h1>
+            <h1 className="text-4xl font-black text-red-500">
+              Join the Lifesaving Community
+            </h1>
             <p className="mt-3 text-default-500">
               Create an account and become a blood donor today.
             </p>
@@ -174,14 +186,18 @@ const SignUpPage = () => {
                   />
                 </label>
 
-                <p className="mt-3 text-center font-medium">Upload Profile Photo</p>
+                <p className="mt-3 text-center font-medium">
+                  Upload Profile Photo
+                </p>
               </div>
             </div>
 
             <div className="grid gap-5 md:grid-cols-2">
               {/* Full Name */}
               <div>
-                <label className="mb-2 block text-sm font-semibold">Full Name</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Full Name
+                </label>
                 <div className="relative">
                   <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
                   <input
@@ -196,7 +212,9 @@ const SignUpPage = () => {
 
               {/* Email */}
               <div>
-                <label className="mb-2 block text-sm font-semibold">Email Address</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Email Address
+                </label>
                 <div className="relative">
                   <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
                   <input
@@ -211,7 +229,9 @@ const SignUpPage = () => {
 
               {/* Phone */}
               <div>
-                <label className="mb-2 block text-sm font-semibold">Phone Number</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Phone Number
+                </label>
                 <div className="relative">
                   <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
                   <input
@@ -226,7 +246,9 @@ const SignUpPage = () => {
 
               {/* Gender */}
               <div>
-                <label className="mb-2 block text-sm font-semibold">Gender</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Gender
+                </label>
                 <select
                   name="gender"
                   required
@@ -241,7 +263,9 @@ const SignUpPage = () => {
 
               {/* District */}
               <div>
-                <label className="mb-2 block text-sm font-semibold">District</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  District
+                </label>
                 <div className="relative">
                   <FiMapPin className="absolute left-4 top-1/2 z-10 -translate-y-1/2 text-red-400" />
                   <select
@@ -251,7 +275,7 @@ const SignUpPage = () => {
                     className="h-14 w-full rounded-xl border border-default-200 bg-black/40 pl-12 pr-4 text-white outline-none transition-all focus:border-red-500"
                   >
                     <option value="">Select District</option>
-                    {districts.map(district => (
+                    {districts.map((district) => (
                       <option key={district.id} value={district.id}>
                         {district.name}
                       </option>
@@ -262,7 +286,9 @@ const SignUpPage = () => {
 
               {/* Upazila */}
               <div>
-                <label className="mb-2 block text-sm font-semibold">Upazila</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Upazila
+                </label>
                 <select
                   name="upazila"
                   required
@@ -270,7 +296,7 @@ const SignUpPage = () => {
                   className="h-14 w-full rounded-xl bg-black/40 text-white border border-default-200 px-4 outline-none focus:border-red-500 disabled:opacity-50"
                 >
                   <option value="">Select Upazila</option>
-                  {filteredUpazilas.map(upazila => (
+                  {filteredUpazilas.map((upazila) => (
                     <option key={upazila.id} value={upazila.name}>
                       {upazila.name}
                     </option>
@@ -281,18 +307,20 @@ const SignUpPage = () => {
 
             {/* Blood Group */}
             <div>
-              <label className="mb-3 block text-sm font-semibold">Blood Group</label>
+              <label className="mb-3 block text-sm font-semibold">
+                Blood Group
+              </label>
 
               <div className="grid grid-cols-4 gap-3 md:grid-cols-8">
-                {bloodGroups.map(group => (
+                {bloodGroups.map((group) => (
                   <button
                     type="button"
                     key={group}
                     onClick={() => setSelectedBloodGroup(group)}
                     className={`h-12 rounded-xl border font-semibold transition-all ${
                       selectedBloodGroup === group
-                        ? 'border-red-500 bg-red-500 text-white shadow-md'
-                        : 'border-default-200 hover:border-red-300'
+                        ? "border-red-500 bg-red-500 text-white shadow-md"
+                        : "border-default-200 hover:border-red-300"
                     }`}
                   >
                     {group}
@@ -300,19 +328,25 @@ const SignUpPage = () => {
                 ))}
               </div>
 
-              <input type="hidden" name="bloodGroup" value={selectedBloodGroup} />
+              <input
+                type="hidden"
+                name="bloodGroup"
+                value={selectedBloodGroup}
+              />
             </div>
 
             {/* Password Fields */}
             <div className="grid gap-5 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-semibold">Password</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Password
+                </label>
                 <div className="relative">
                   <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
                   <input
                     name="password"
                     required
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
                     className="h-14 w-full rounded-xl border border-default-200 pl-12 pr-12 outline-none focus:border-red-500"
                   />
@@ -327,13 +361,15 @@ const SignUpPage = () => {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Confirm Password</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Confirm Password
+                </label>
                 <div className="relative">
                   <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
                   <input
                     name="confirmPassword"
                     required
-                    type={showConfirmPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm password"
                     className="h-14 w-full rounded-xl border border-default-200 pl-12 pr-12 outline-none focus:border-red-500"
                   />
@@ -355,14 +391,17 @@ const SignUpPage = () => {
               disabled={isLoading}
               className="h-14 bg-red-600 text-lg font-semibold text-white hover:bg-red-700 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Processing...' : 'Complete Registration'}
+              {isLoading ? "Processing..." : "Complete Registration"}
             </Button>
           </form>
 
           {/* Login Link */}
           <p className="mt-6 text-center text-sm text-default-500">
-            Already have an account?{' '}
-            <Link href="/login" className="font-semibold text-red-500 hover:underline">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-semibold text-red-500 hover:underline"
+            >
               Login Here
             </Link>
           </p>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FiArrowLeft, FiMapPin, FiSave, FiUser } from "react-icons/fi";
 import { LuHospital } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 const MyRequestUpdate = ({ requestData }) => {
   const router = useRouter();
@@ -14,6 +15,14 @@ const MyRequestUpdate = ({ requestData }) => {
     const data = Object.fromEntries(formData.entries());
     const res = await updateMyRequest(requestData._id, data);
     if (res.success) {
+      toast.success("Request Updated Successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       router.push("/dashboard/donor/request-donor/my-requests");
     }
   };

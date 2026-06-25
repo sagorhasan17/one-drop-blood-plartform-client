@@ -17,6 +17,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { LuHospital } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 const CreateNewDonorRequestPage = () => {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -56,6 +57,14 @@ const CreateNewDonorRequestPage = () => {
       };
       const payload = await createDonor(finalSubmissionData);
       if (payload.insertedId) {
+        toast.success("Donor Request Created Successfully", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         setIsSubmit(false);
         console.log("Form Submitted Successfully :)", payload);
         redirect("/dashboard/donor/request-donor");

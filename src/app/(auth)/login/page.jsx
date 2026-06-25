@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Button, toast } from "@heroui/react";
+import { Button } from "@heroui/react";
 
 import { authClient } from "@/lib/auth-client";
 import { FiEye, FiEyeOff, FiLock, FiMail, FiShield } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,8 +24,14 @@ const LoginPage = () => {
       callbackURL: "/",
     });
     if (!error) {
-      toast.success("Login successful!");
-      console.log("Login successful:", data);
+      toast.success("Login Successful", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 

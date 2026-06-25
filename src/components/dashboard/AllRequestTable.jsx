@@ -16,7 +16,7 @@ const statusColorMap = {
   cancelled: "danger",
 };
 
-export default function MyRequestsTable({ users = [] }) {
+export default function AllRequestTable({ requests = [] }) {
   return (
     <div className="overflow-hidden rounded-3xl border border-default-200 bg-white shadow-sm">
       <Table>
@@ -41,7 +41,7 @@ export default function MyRequestsTable({ users = [] }) {
             </Table.Header>
 
             <Table.Body
-              items={users}
+              items={requests}
               emptyContent={
                 <div className="py-10 text-center text-default-500">
                   No donation requests found

@@ -1,23 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Button,
-  Input,
-  Label,
-  Modal,
-  Surface,
-  TextField,
-} from "@heroui/react";
+import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { FaArrowRight, FaHandHoldingHeart } from "react-icons/fa";
 import { FaShieldHeart } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
-export function DonateModal({
-  user,
-  requestId,
-  status = "pending",
-}) {
+export function DonateModal({ user, requestId, status = "pending" }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,17 +27,22 @@ export function DonateModal({
             donorName: user?.name,
             donorEmail: user?.email,
           }),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data?.message ||
-            "Failed to accept donation request"
-        );
+        throw new Error(data?.message || "Failed to accept donation request");
       }
+      toast.success("Donation Request Accepted Successfully", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
 
       router.refresh();
     } catch (error) {
@@ -63,10 +58,10 @@ export function DonateModal({
     status === "pending"
       ? "Donate Now"
       : status === "inprogress"
-      ? "Already Accepted"
-      : status === "done"
-      ? "Donation Completed"
-      : "Request Cancelled";
+        ? "Already Accepted"
+        : status === "done"
+          ? "Donation Completed"
+          : "Request Cancelled";
 
   return (
     <Modal>
@@ -75,9 +70,7 @@ export function DonateModal({
         variant="danger"
         isDisabled={isDisabled}
         className={`w-full h-14 rounded-full font-semibold flex items-center justify-center gap-3 shadow-lg ${
-          isDisabled
-            ? "opacity-60 cursor-not-allowed"
-            : ""
+          isDisabled ? "opacity-60 cursor-not-allowed" : ""
         }`}
       >
         <FaHandHoldingHeart className="text-lg" />
@@ -108,19 +101,14 @@ export function DonateModal({
                   </h2>
 
                   <p className="mt-3 max-w-xs text-sm leading-relaxed text-slate-500">
-                    Please confirm that you are
-                    available and willing to donate
+                    Please confirm that you are available and willing to donate
                     blood for this patient.
                   </p>
                 </div>
 
                 {/* Donor Info */}
                 <div className="mt-8 space-y-5">
-                  <TextField
-                    name="name"
-                    variant="secondary"
-                    className="w-full"
-                  >
+                  <TextField name="name" variant="secondary" className="w-full">
                     <Label className="mb-2 text-[11px] font-bold uppercase tracking-[2px] text-slate-400">
                       Donor Name
                     </Label>
@@ -158,9 +146,7 @@ export function DonateModal({
                     variant="danger"
                     className="h-14 w-full rounded-2xl text-base font-bold text-white shadow-xl"
                   >
-                    {isLoading
-                      ? "Processing..."
-                      : "Confirm Donation"}
+                    {isLoading ? "Processing..." : "Confirm Donation"}
                   </Button>
 
                   <Button
