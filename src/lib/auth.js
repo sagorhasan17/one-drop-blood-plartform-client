@@ -44,7 +44,7 @@ export const auth = betterAuth({
       },
       status: {
         type: 'string',
-        default: 'pending',
+        default: 'active',
       },
       donationCount: {
         type: 'string',

@@ -23,7 +23,7 @@ const MyRequestUpdate = ({ requestData }) => {
         pauseOnHover: true,
         draggable: true,
       });
-      router.push("/dashboard/donor/request-donor/my-requests");
+      router.push("/dashboard/my-donation-requests");
     }
   };
   return (
@@ -33,7 +33,7 @@ const MyRequestUpdate = ({ requestData }) => {
         <div className="flex items-start gap-4 md:gap-6">
           {/* Back Button */}
 
-          <Link href={`/dashboard/donor/request-donor/my-requests`}>
+          <Link href={`/dashboard/my-donation-requests`}>
             <Button
               isIconOnly
               variant="flat"

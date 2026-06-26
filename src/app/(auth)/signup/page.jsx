@@ -115,7 +115,7 @@ const SignUpPage = () => {
         confirmPassword: formData.get("confirmPassword"),
         profilePhoto: profilePhotoUrl,
         role: "donor", // default role
-        status: "pending", // default status
+        status: "active", // default status is active
         donationCount: 0,
       });
 
@@ -128,7 +128,6 @@ const SignUpPage = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        console.log("Registration successful:", data);
       }
     } catch (error) {
       console.error("Error during registration:", error);

@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { Avatar, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
+import { Avatar, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
+import Link from "next/link";
 import { FiLogOut } from "react-icons/fi";
 import { MdDashboardCustomize } from "react-icons/md";
 
@@ -42,7 +42,7 @@ const ProfileModal = ({ user }) => {
 
           {/* Menu */}
           <div className="mt-4 space-y-2">
-            <Link href="/dashboard/donor">
+            <Link href="/dashboard">
               <button
                 slot="close"
                 className="flex h-12 w-full cursor-pointer items-center gap-3 rounded-xl px-4 text-default-700 transition-all duration-200 hover:bg-white/20 hover:text-red-500"

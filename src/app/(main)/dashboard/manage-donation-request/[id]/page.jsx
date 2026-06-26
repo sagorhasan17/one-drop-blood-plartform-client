@@ -1,11 +1,10 @@
 import MyRequestUpdate from "@/components/shared/updateForm/MyRequestUpdate";
 import { getMyRequestsById } from "@/lib/api/request";
 
-const ManageDonorRequest = async ({ params }) => {
+const ManageDonationRequestPage = async ({ params }) => {
   const { id } = await params;
   const requestData = await getMyRequestsById(id);
-
   return <MyRequestUpdate requestData={requestData} />;
 };
 
-export default ManageDonorRequest;
+export default ManageDonationRequestPage;

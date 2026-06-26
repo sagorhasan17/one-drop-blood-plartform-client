@@ -1,11 +1,8 @@
 import AllRequestTable from "@/components/dashboard/AllRequestTable";
 import { getAllDonorsRequest } from "@/lib/api/donor";
-import { getSession } from "@/lib/session";
 
-const VolunteerPage = async () => {
-  const res = await getSession();
+const AllPublicRequests = async () => {
   const requests = await getAllDonorsRequest();
-  console.log(requests);
   return (
     <div className="space-y-8">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -24,4 +21,4 @@ const VolunteerPage = async () => {
   );
 };
 
-export default VolunteerPage;
+export default AllPublicRequests;

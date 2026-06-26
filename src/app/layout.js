@@ -1,6 +1,6 @@
+import ReactToastContainer from "@/components/shared/ReactToastContainer";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import ReactToastContainer from "@/components/shared/ReactToastContainer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,7 +19,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark" data-theme="dark">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className="dark scroll-smooth"
+      data-theme="dark"
+    >
       <body
         className={`${poppins.className} min-h-screen bg-background text-foreground flex flex-col`}
       >

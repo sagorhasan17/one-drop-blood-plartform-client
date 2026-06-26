@@ -1,9 +1,9 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@heroui/react";
 
 import { authClient } from "@/lib/auth-client";
 import { FiEye, FiEyeOff, FiLock, FiMail, FiShield } from "react-icons/fi";
@@ -15,7 +15,6 @@ const LoginPage = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const inputData = Object.fromEntries(formData.entries());
-    console.log("Form Data:", inputData);
 
     const { data, error } = await authClient.signIn.email({
       email: inputData.email, // required

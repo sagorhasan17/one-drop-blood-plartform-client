@@ -35,11 +35,11 @@ const Navbar = () => {
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
 
-  if (isPending) {
-    return (
-      <div className="h-10 w-10 animate-pulse rounded-full bg-default-200" />
-    );
-  }
+  // if (isPending) {
+  //   return (
+  //     <div className="h-10 w-10 animate-pulse rounded-full bg-default-200" />
+  //   );
+  // }
 
   return (
     <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-md">
@@ -79,23 +79,31 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Login */}
-          <div className="hidden lg:flex items-center">
-            {user ? (
-              <>
-                <ProfileModal user={user} />
-              </>
-            ) : (
-              <Link href="/login">
-                <Button
-                  radius="full"
-                  className="bg-red-600 hover:bg-red-700 text-white font-semibold"
-                >
-                  <FiLogIn className="mr-1" />
-                  Login
-                </Button>
-              </Link>
-            )}
-          </div>
+          {isPending ? (
+            <>
+              <div className="h-10 w-10 animate-pulse rounded-full bg-default-200" />
+            </>
+          ) : (
+            <>
+              <div className="hidden lg:flex items-center">
+                {user ? (
+                  <>
+                    <ProfileModal user={user} />
+                  </>
+                ) : (
+                  <Link href="/login">
+                    <Button
+                      radius="full"
+                      className="bg-red-600 hover:bg-red-700 text-white font-semibold"
+                    >
+                      <FiLogIn className="mr-1" />
+                      Login
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </>
+          )}
 
           {/* Mobile Toggle */}
           <button

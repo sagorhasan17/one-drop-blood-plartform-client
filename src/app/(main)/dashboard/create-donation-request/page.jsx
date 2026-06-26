@@ -19,7 +19,7 @@ import {
 import { LuHospital } from "react-icons/lu";
 import { toast } from "react-toastify";
 
-const CreateNewDonorRequestPage = () => {
+const CreateDonationRequestPage = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -326,4 +326,4 @@ const CreateNewDonorRequestPage = () => {
   );
 };
 
-export default CreateNewDonorRequestPage;
+export default CreateDonationRequestPage;

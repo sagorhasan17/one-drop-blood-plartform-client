@@ -1,13 +1,18 @@
 import MyRequestsTable from "@/components/dashboard/MyRequestsTable";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-const MyRequestsPage = async () => {
+const MyDonationRequestsPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   const user = session?.user;
+  if (!user) {
+    redirect("/login");
+  }
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/donor/request-donor/my-requests?email=${user?.email}`,
     {
@@ -36,4 +41,4 @@ const MyRequestsPage = async () => {
   );
 };
 
-export default MyRequestsPage;
+export default MyDonationRequestsPage;

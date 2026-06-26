@@ -1,9 +1,10 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Drawer, DrawerBody, DrawerContent, DrawerHeader } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaHandsHelping, FaUserCircle } from "react-icons/fa";
+import { FaHandsHelping, FaUserCircle, FaUsers } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi";
 import { LuHandHelping } from "react-icons/lu";
 import { MdDashboardCustomize } from "react-icons/md";
@@ -11,11 +12,24 @@ import { MdDashboardCustomize } from "react-icons/md";
 export function DashboardSideBar() {
   const pathname = usePathname();
 
+  const { data, isPending } = authClient.useSession();
+
+  if (isPending) return null;
+
+  const role = data?.user?.role;
+
+  const dashboardHref =
+    role === "admin"
+      ? "/dashboard/admin"
+      : role === "volunteer"
+        ? "/dashboard/volunteer"
+        : "/dashboard/donor";
+
   const navItems = [
     {
       icon: MdDashboardCustomize,
       label: "Dashboard",
-      href: "/dashboard/donor",
+      href: dashboardHref,
     },
     {
       icon: FaUserCircle,
@@ -25,42 +39,57 @@ export function DashboardSideBar() {
     {
       icon: HiPencil,
       label: "Add Request",
-      href: "/dashboard/donor/request-donor/new",
+      href: "/dashboard/create-donation-request",
     },
     {
       icon: LuHandHelping,
       label: "My Requests",
-      href: "/dashboard/donor/request-donor/my-requests",
+      href: "/dashboard/my-donation-requests",
     },
-    {
-      icon: FaHandsHelping,
-      label: "All Public Requests",
-      href: "/dashboard/volunteer",
-    },
+
+    ...(role === "admin"
+      ? [
+          {
+            icon: FaUsers,
+            label: "All Users",
+            href: "/dashboard/admin/all-users",
+          },
+        ]
+      : []),
+
+    ...(role === "volunteer"
+      ? [
+          {
+            icon: FaHandsHelping,
+            label: "All Public Requests",
+            href: "/dashboard/volunteer/all-public-requests",
+          },
+        ]
+      : []),
   ];
 
   const navContent = (
     <nav className="flex flex-col gap-2">
-      {navItems.map((item) => {
-        const isActive = pathname === item.href;
+      {navItems.map(({ icon: Icon, label, href }) => {
+        const isActive = pathname === href;
 
         return (
           <Link
-            key={item.label}
-            href={item.href}
+            key={label}
+            href={href}
             className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-all duration-200 ${
               isActive
-                ? "bg-red-50 font-semibold text-red-600"
+                ? "bg-red-50 text-red-600 font-semibold"
                 : "text-default-700 hover:bg-default-100"
             }`}
           >
-            <item.icon
+            <Icon
               className={`size-5 ${
                 isActive ? "text-red-600" : "text-default-500"
               }`}
             />
 
-            <span>{item.label}</span>
+            <span>{label}</span>
           </Link>
         );
       })}
@@ -69,9 +98,8 @@ export function DashboardSideBar() {
 
   return (
     <>
-      {/* Desktop Sidebar - Removed overflow-y-auto to keep it completely fixed */}
       <div className="h-full p-5">{navContent}</div>
-      {/* Mobile Drawer */}
+
       <Drawer placement="left">
         <DrawerContent>
           <DrawerHeader>Navigation</DrawerHeader>
