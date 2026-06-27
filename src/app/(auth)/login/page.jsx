@@ -119,6 +119,7 @@ const LoginPage = () => {
 
                 <input
                   type="email"
+                  required
                   name="email"
                   placeholder="user@example.com"
                   className="h-14 w-full rounded-2xl border border-default-200 bg-transparent pl-12 pr-4 text-sm outline-none transition-all focus:border-red-500"
@@ -145,6 +146,7 @@ const LoginPage = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
+                  required
                   placeholder="Enter your password"
                   className="h-14 w-full rounded-2xl border border-default-200 bg-transparent pl-12 pr-12 text-sm outline-none transition-all focus:border-red-500"
                 />

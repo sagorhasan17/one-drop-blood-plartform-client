@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { FaTint } from "react-icons/fa";
 import { FiArrowRight } from "react-icons/fi";
 import MyRequestsTable from "./MyRequestsTable";
 
@@ -16,12 +17,24 @@ const DonorDashboard = async ({ user }) => {
     cache: "no-store",
   });
   const data = await res.json();
-  console.log(data);
 
   if (data.length === 0) {
     return (
-      <div className="flex w-full justify-center">
-        No Donation Requests Found...
+      <div className=" w-full flex min-h-87 items-center justify-center">
+        <div className="max-w-full rounded-2xl border border-default-200 bg-content1 p-8 text-center shadow-lg">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
+            <FaTint className="text-4xl text-red-500" />
+          </div>
+
+          <h2 className="mt-6 text-2xl font-bold text-default-800 dark:text-default-100">
+            No Donation Requests Found
+          </h2>
+
+          <p className="mt-3 text-default-500">
+            There are currently no blood donation requests available. Please
+            check back later or create a new request if you need blood.
+          </p>
+        </div>
       </div>
     );
   }

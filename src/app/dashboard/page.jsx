@@ -8,9 +8,13 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 const DashboardHomePage = async () => {
-  const { user, isPending } = await auth.api.getSession({
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
+  if (!session) {
+    return redirect("/login");
+  }
+  const { user, isPending } = session;
   const role = user?.role;
   if (!user) {
     return redirect("/login");
@@ -23,7 +27,6 @@ const DashboardHomePage = async () => {
     );
   }
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/my-requests-with-limit?email=${user?.email}`;
-
   const res = await fetch(url, {
     cache: "no-store",
   });

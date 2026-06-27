@@ -7,6 +7,7 @@ import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import { FaInfoCircle } from "react-icons/fa";
 import {
   FiCalendar,
   FiDroplet,
@@ -18,6 +19,7 @@ import {
 } from "react-icons/fi";
 import { LuHospital } from "react-icons/lu";
 import { toast } from "react-toastify";
+import RootLoadingPage from "../loading";
 
 const CreateDonationRequestPage = () => {
   const [isSubmit, setIsSubmit] = useState(false);
@@ -25,6 +27,28 @@ const CreateDonationRequestPage = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
+
+  if (isPending) {
+    return <RootLoadingPage />;
+  }
+
+  if (user?.status !== "active") {
+    return (
+      <div className="mx-auto max-w-3xl rounded-2xl border border-warning-300 bg-warning-50 p-8 text-center shadow-sm dark:border-warning-700 dark:bg-warning-900/20">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-warning-100 dark:bg-warning-800">
+          <FaInfoCircle className="text-3xl text-red-600 dark:text-warning-400" />
+        </div>
+
+        <h2 className="text-2xl font-bold text-warning-700 dark:text-warning-300">
+          Donation Status {user?.status}
+        </h2>
+
+        <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-default-600 dark:text-default-400">
+          you need to be active to request blood donation.
+        </p>
+      </div>
+    );
+  }
 
   const handleDistrictChange = (e) => {
     const districtId = e.target.value;

@@ -1,7 +1,9 @@
 "use client";
 
+import { updateProfile } from "@/lib/api/users";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   FiDroplet,
@@ -12,18 +14,9 @@ import {
   FiSave,
   FiUser,
 } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
-  const { data, isPending } = authClient.useSession();
-  const user = data?.user;
-  const formattedDate =
-    user?.updatedAt && !isNaN(new Date(user.updatedAt))
-      ? new Date(user.updatedAt).toLocaleDateString("en-US", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        })
-      : "Date not specified";
   // States
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,6 +32,20 @@ const ProfilePage = () => {
     location: "",
     status: "",
   });
+  const session = authClient.useSession();
+  const router = useRouter();
+  if (!session) {
+    return router.push("/login");
+  }
+  const user = session?.data?.user;
+  const formattedDate =
+    user?.updatedAt && !isNaN(new Date(user.updatedAt))
+      ? new Date(user.updatedAt).toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
+      : "Date not specified";
 
   useEffect(() => {
     if (user) {
@@ -47,8 +54,8 @@ const ProfilePage = () => {
         email: user.email || "",
         phone: user.phone || "",
         gender: user.gender || "Male",
-        district: user.district || "Dhaka",
-        upazila: user.upazila || "Sadar",
+        district: user?.district || "",
+        upazila: user?.upazila || "",
         bloodGroup: user.bloodGroup || "A+",
         lastDonation: user.lastDonation || "N/A",
         totalDonations: user.donationCount || 0,
@@ -74,8 +81,8 @@ const ProfilePage = () => {
         email: user.email || "",
         phone: user.phone || "",
         gender: user.gender || "Male",
-        district: user.district || "Dhaka",
-        upazila: user.upazila || "Sadar",
+        district: user?.district || "",
+        upazila: user?.upazila || "",
         bloodGroup: user.bloodGroup || "A+",
         lastDonation: user.lastDonation || "N/A",
         totalDonations: user.donationCount || 0,
@@ -87,12 +94,31 @@ const ProfilePage = () => {
     setIsEditing(false);
   };
 
-  const handleSave = () => {
-    console.log("Updated Data to save:", formData);
-    setIsEditing(false);
+  const handleSave = async () => {
+    const res = await updateProfile(formData);
+    if (res.success) {
+      toast.success("Profile Updated Successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setIsEditing(false);
+    } else {
+      toast.error("Profile Update Failed", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+      setIsEditing(true);
+    }
   };
 
-  if (isPending) {
+  if (session?.isPending) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-10 w-10 animate-pulse rounded-full bg-default-200" />
@@ -163,11 +189,13 @@ const ProfilePage = () => {
             <div className="flex flex-col gap-5 md:flex-row md:items-end">
               <Avatar className="h-32 w-32 rounded-md border-4 border-white bg-default-100">
                 <Avatar.Image
-                  alt={user.name || "User Avatar"}
+                  alt={user?.name || "User Avatar"}
                   src={user?.profilePhoto}
                   referrerPolicy="no-referrer"
                 />
-                <Avatar.Fallback>{user.name?.charAt(0) || "U"}</Avatar.Fallback>
+                <Avatar.Fallback>
+                  {user?.name?.charAt(0) || "U"}
+                </Avatar.Fallback>
               </Avatar>
 
               <div>
@@ -176,7 +204,9 @@ const ProfilePage = () => {
                 </h2>
 
                 <div className="mt-2 flex flex-wrap gap-3">
-                  <span className="rounded-full bg-green-100 px-4 py-1 text-sm font-semibold text-green-700">
+                  <span
+                    className={`rounded-full bg-green-100 px-4 py-1 text-sm font-semibold text-green-700 ${formData.status === "active" ? "text-green-600" : "text-red-600"}`}
+                  >
                     {formData.status}
                   </span>
 
@@ -293,43 +323,37 @@ const ProfilePage = () => {
             </h3>
 
             <div className="grid gap-4 md:grid-cols-2">
+              {/* District */}
               <div>
                 <label className="mb-2 block text-sm font-semibold">
                   District
                 </label>
 
-                <select
-                  name="district"
-                  value={formData.district}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className="h-14 w-full rounded-xl border border-default-200 px-4 outline-none focus:border-red-500 disabled:cursor-not-allowed disabled:bg-default-100 disabled:opacity-70"
-                >
-                  <option value="Dhaka">Dhaka</option>
-                  <option value="Gazipur">Gazipur</option>
-                  <option value="Khulna">Khulna</option>
-                  <option value="Sylhet">Sylhet</option>
-                  <option value="Chittagong">Chittagong</option>
-                  <option value="Rajshahi">Rajshahi</option>
-                </select>
+                <div className="relative">
+                  <FiMapPin className="absolute left-12 top-1/2 z-10 -translate-y-1/2 text-red-400 mr-4" />
+                  <input
+                    type="text"
+                    name="district"
+                    value={formData.district}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className="h-14 w-full rounded-xl border border-default-200 px-4 outline-none focus:border-red-500 disabled:cursor-not-allowed disabled:bg-default-100 disabled:opacity-70"
+                  />
+                </div>
               </div>
-
+              {/* Upazila */}
               <div>
                 <label className="mb-2 block text-sm font-semibold">
                   Upazila
                 </label>
-
-                <select
+                <input
+                  type="text"
                   name="upazila"
                   value={formData.upazila}
                   onChange={handleChange}
                   disabled={!isEditing}
                   className="h-14 w-full rounded-xl border border-default-200 px-4 outline-none focus:border-red-500 disabled:cursor-not-allowed disabled:bg-default-100 disabled:opacity-70"
-                >
-                  <option value="Sadar">Sadar</option>
-                  <option value="Kaliganj">Kaliganj</option>
-                  <option value="Tongi">Tongi</option>
-                </select>
+                />
               </div>
             </div>
           </div>

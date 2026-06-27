@@ -3,12 +3,11 @@ import { getDonorById } from "@/lib/api/donor";
 import { auth } from "@/lib/auth";
 import { Chip } from "@heroui/react";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 import {
-  FaArrowRight,
   FaCalendarAlt,
   FaClock,
-  FaHandHoldingHeart,
   FaHospital,
   FaMapMarkerAlt,
   FaTint,
@@ -22,7 +21,11 @@ const DonationRequestDetailsPage = async ({ params }) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const user = session.user;
+  const user = session?.user;
+  console.log("user", user);
+  if (!user) {
+    return redirect("/login");
+  }
 
   const {
     recipientName,
