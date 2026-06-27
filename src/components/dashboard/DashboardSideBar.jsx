@@ -1,13 +1,13 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { Drawer, DrawerBody, DrawerContent, DrawerHeader } from "@heroui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaHandsHelping, FaUserCircle, FaUsers } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi";
 import { LuHandHelping } from "react-icons/lu";
 import { MdDashboardCustomize } from "react-icons/md";
+import UserCard from "./UserCard";
 
 export function DashboardSideBar() {
   const pathname = usePathname();
@@ -15,21 +15,22 @@ export function DashboardSideBar() {
   const { data, isPending } = authClient.useSession();
 
   if (isPending) return null;
+  const user = data?.user;
 
   const role = data?.user?.role;
 
-  const dashboardHref =
-    role === "admin"
-      ? "/dashboard/admin"
-      : role === "volunteer"
-        ? "/dashboard/volunteer"
-        : "/dashboard/donor";
+  // const dashboardHref =
+  //   role === "admin"
+  //     ? "/dashboard/admin"
+  //     : role === "volunteer"
+  //       ? "/dashboard/volunteer"
+  //       : "/dashboard/donor";
 
   const navItems = [
     {
       icon: MdDashboardCustomize,
       label: "Dashboard",
-      href: dashboardHref,
+      href: "/dashboard",
     },
     {
       icon: FaUserCircle,
@@ -97,15 +98,16 @@ export function DashboardSideBar() {
   );
 
   return (
-    <>
-      <div className="h-full p-5">{navContent}</div>
+    <div className="flex h-[calc(100vh-110px)] flex-col rounded-2xl border border-default-200 bg-content1 shadow-sm">
+      {/* Navigation */}
+      <div className="flex-1 overflow-y-auto p-5">
+        <div className="space-y-2">{navContent}</div>
+      </div>
 
-      <Drawer placement="left">
-        <DrawerContent>
-          <DrawerHeader>Navigation</DrawerHeader>
-          <DrawerBody>{navContent}</DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    </>
+      {/* User Card */}
+      <div className="border-t border-default-200 p-5">
+        <UserCard user={user} />
+      </div>
+    </div>
   );
 }

@@ -1,8 +1,18 @@
 import AllRequestTable from "@/components/dashboard/AllRequestTable";
 import { getAllDonorsRequest } from "@/lib/api/donor";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 const AllPublicRequests = async () => {
   const requests = await getAllDonorsRequest();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const user = session?.user;
+  if (!user) {
+    redirect("/login");
+  }
   return (
     <div className="space-y-8">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">

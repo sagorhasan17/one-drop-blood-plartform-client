@@ -13,18 +13,16 @@ const MyDonationRequestsPage = async () => {
     redirect("/login");
   }
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/donor/request-donor/my-requests?email=${user?.email}`,
-    {
-      cache: "no-store",
-    },
-  );
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/my-requests?email=${user?.email}`;
 
+  const res = await fetch(url, {
+    cache: "no-store",
+  });
   const data = await res.json();
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div className="space-y-2">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h1 className="text-4xl font-black">
             My <span className="text-red-500">Donation Requests</span>
@@ -35,7 +33,6 @@ const MyDonationRequestsPage = async () => {
           </p>
         </div>
       </div>
-
       <MyRequestsTable users={data} />
     </div>
   );

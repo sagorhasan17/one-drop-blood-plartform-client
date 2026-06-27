@@ -15,3 +15,26 @@ export const serverMutation = async (path, data, method = "POST") => {
 
   return result;
 };
+
+// export const authHeaders = async () => {
+//   const session = await getSession();
+//   if (!session) {
+//     return {};
+//   }
+//   const token = session?.token;
+//   return {
+//     "Content-Type": "application/json",
+//     Authorization: `Bearer ${token}`,
+//   };
+// };
+// console.log(authHeaders());
+
+export const protectedFetch = async () => {
+  const res = await fetch(`${baseUrl}/api/auth/session`);
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(result?.message || `Request failed: ${res.status}`);
+  }
+
+  return result;
+};

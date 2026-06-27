@@ -1,59 +1,67 @@
-'use client';
+"use client";
 
-import { authClient } from '@/lib/auth-client';
-import { Avatar, Button } from '@heroui/react';
-import { useEffect, useState } from 'react';
-import { FiDroplet, FiEdit, FiMail, FiMapPin, FiPhone, FiSave, FiUser } from 'react-icons/fi';
+import { authClient } from "@/lib/auth-client";
+import { Avatar, Button } from "@heroui/react";
+import { useEffect, useState } from "react";
+import {
+  FiDroplet,
+  FiEdit,
+  FiMail,
+  FiMapPin,
+  FiPhone,
+  FiSave,
+  FiUser,
+} from "react-icons/fi";
 
 const ProfilePage = () => {
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
-const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
-    ? new Date(user.updatedAt).toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
-    : "Date not specified";
-    console.log('formattedDate', formattedDate);
+  const formattedDate =
+    user?.updatedAt && !isNaN(new Date(user.updatedAt))
+      ? new Date(user.updatedAt).toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
+      : "Date not specified";
   // States
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    gender: '',
-    district: '',
-    upazila: '',
-    bloodGroup: '',
-    lastDonation: '',
+    name: "",
+    email: "",
+    phone: "",
+    gender: "",
+    district: "",
+    upazila: "",
+    bloodGroup: "",
+    lastDonation: "",
     totalDonations: 0,
-    location: '',
-    status: '',
+    location: "",
+    status: "",
   });
 
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        gender: user.gender || 'Male',
-        district: user.district || 'Dhaka',
-        upazila: user.upazila || 'Sadar',
-        bloodGroup: user.bloodGroup || 'A+',
-        lastDonation: user.lastDonation || 'N/A',
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        gender: user.gender || "Male",
+        district: user.district || "Dhaka",
+        upazila: user.upazila || "Sadar",
+        bloodGroup: user.bloodGroup || "A+",
+        lastDonation: user.lastDonation || "N/A",
         totalDonations: user.donationCount || 0,
-        location: user.location || 'Bangladesh',
-        status: user.status || 'Active',
+        location: user.location || "Bangladesh",
+        status: user.status || "Active",
         lastDonate: user.donatedAt,
       });
     }
   }, [user]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -62,17 +70,17 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
   const handleCancel = () => {
     if (user) {
       setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        gender: user.gender || 'Male',
-        district: user.district || 'Dhaka',
-        upazila: user.upazila || 'Sadar',
-        bloodGroup: user.bloodGroup || 'A+',
-        lastDonation: user.lastDonation || 'N/A',
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        gender: user.gender || "Male",
+        district: user.district || "Dhaka",
+        upazila: user.upazila || "Sadar",
+        bloodGroup: user.bloodGroup || "A+",
+        lastDonation: user.lastDonation || "N/A",
         totalDonations: user.donationCount || 0,
-        location: user.location || 'Bangladesh',
-        status: user.status || 'Active',
+        location: user.location || "Bangladesh",
+        status: user.status || "Active",
         lastDonate: user.donatedAt,
       });
     }
@@ -80,7 +88,7 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
   };
 
   const handleSave = () => {
-    console.log('Updated Data to save:', formData);
+    console.log("Updated Data to save:", formData);
     setIsEditing(false);
   };
 
@@ -155,15 +163,17 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
             <div className="flex flex-col gap-5 md:flex-row md:items-end">
               <Avatar className="h-32 w-32 rounded-md border-4 border-white bg-default-100">
                 <Avatar.Image
-                  alt={user.name || 'User Avatar'}
+                  alt={user.name || "User Avatar"}
                   src={user?.profilePhoto}
                   referrerPolicy="no-referrer"
                 />
-                <Avatar.Fallback>{user.name?.charAt(0) || 'U'}</Avatar.Fallback>
+                <Avatar.Fallback>{user.name?.charAt(0) || "U"}</Avatar.Fallback>
               </Avatar>
 
               <div>
-                <h2 className="text-4xl font-black">{formData.name || 'Unknown User'}</h2>
+                <h2 className="text-4xl font-black">
+                  {formData.name || "Unknown User"}
+                </h2>
 
                 <div className="mt-2 flex flex-wrap gap-3">
                   <span className="rounded-full bg-green-100 px-4 py-1 text-sm font-semibold text-green-700">
@@ -183,7 +193,7 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
               </p>
 
               <h3 className="mt-2 text-5xl font-black text-red-600">
-                {formData.bloodGroup || 'N/A'}
+                {formData.bloodGroup || "N/A"}
               </h3>
             </div>
           </div>
@@ -203,7 +213,9 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
 
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-semibold">Full Name</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Full Name
+                </label>
 
                 <input
                   type="text"
@@ -216,7 +228,9 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Email Address</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Email Address
+                </label>
 
                 <div className="relative">
                   <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
@@ -232,7 +246,9 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Phone Number</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Phone Number
+                </label>
 
                 <div className="relative">
                   <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-red-400" />
@@ -250,7 +266,9 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Gender</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Gender
+                </label>
 
                 <select
                   name="gender"
@@ -276,7 +294,9 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
 
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-semibold">District</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  District
+                </label>
 
                 <select
                   name="district"
@@ -295,7 +315,9 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Upazila</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Upazila
+                </label>
 
                 <select
                   name="upazila"
@@ -344,7 +366,7 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
                 ) : (
                   <div className="mt-2 rounded-xl border border-red-200 bg-red-50 p-4 text-center">
                     <span className="text-3xl font-black text-red-600">
-                      {formData.bloodGroup || 'N/A'}
+                      {formData.bloodGroup || "N/A"}
                     </span>
                   </div>
                 )}
@@ -357,17 +379,21 @@ const formattedDate = user?.updatedAt && !isNaN(new Date(user.updatedAt))
 
               <div>
                 <p className="text-sm text-default-500">Total Donations</p>
-                <p className="mt-1 text-2xl font-black text-red-500">{user?.donationCount}</p>
+                <p className="mt-1 text-2xl font-black text-red-500">
+                  {user?.donationCount}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="rounded-3xl border border-green-200 bg-green-50 p-6 shadow-sm">
-            <h3 className="text-xl font-bold text-green-700">Eligible to Donate</h3>
+            <h3 className="text-xl font-bold text-green-700">
+              Eligible to Donate
+            </h3>
 
             <p className="mt-3 text-sm text-green-600">
-              Your account is active and eligible for blood donation. Thank you for helping save
-              lives.
+              Your account is active and eligible for blood donation. Thank you
+              for helping save lives.
             </p>
           </div>
         </div>

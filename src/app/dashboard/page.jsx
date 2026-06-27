@@ -1,18 +1,19 @@
-"use client";
-
 import RootLoadingPage from "@/app/loading";
-import { authClient } from "@/lib/auth-client";
+import AdminDashboard from "@/components/dashboard/AdminDashboard";
+import DonorDashboard from "@/components/dashboard/DonorDashboard";
+import VolunteerDashboard from "@/components/dashboard/VolunteerDashboard";
+import { auth } from "@/lib/auth";
 import { Avatar } from "@heroui/react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-const DashboardHomePage = () => {
-  const { data, isPending } = authClient.useSession();
-  const user = data?.user;
+const DashboardHomePage = async () => {
+  const { user, isPending } = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const role = user?.role;
   if (!user) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <RootLoadingPage />
-      </div>
-    );
+    return redirect("/login");
   }
   if (isPending) {
     return (
@@ -21,6 +22,12 @@ const DashboardHomePage = () => {
       </div>
     );
   }
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/my-requests-with-limit?email=${user?.email}`;
+
+  const res = await fetch(url, {
+    cache: "no-store",
+  });
+  const data = await res.json();
   return (
     <section className="space-y-8">
       {/* Welcome Banner */}
@@ -61,6 +68,15 @@ const DashboardHomePage = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        {role === "admin" ? (
+          <AdminDashboard />
+        ) : role === "volunteer" ? (
+          <VolunteerDashboard />
+        ) : (
+          <DonorDashboard user={user} />
+        )}
       </div>
     </section>
   );

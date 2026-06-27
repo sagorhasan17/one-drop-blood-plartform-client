@@ -10,7 +10,6 @@ export const getSession = async () => {
   if (!user) {
     return redirect("/login");
   }
-
   return user;
 };
 
