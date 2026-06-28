@@ -12,7 +12,14 @@ const UserCard = ({ user }) => {
   const handleLogout = async () => {
     try {
       await authClient.signOut();
-      toast.success("Logged out successfully!");
+      toast.success("Logged out successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       router.push("/login");
     } catch (error) {
       toast.error("Logout failed!");

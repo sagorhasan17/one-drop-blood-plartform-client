@@ -7,39 +7,45 @@ import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { FiLogIn } from "react-icons/fi";
 
+import RootLoadingPage from "@/app/dashboard/loading";
 import ProfileModal from "@/components/modal/ProfileModal";
 import { authClient } from "@/lib/auth-client";
 import NavLink from "./NavLink";
-
-const navLinks = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Donation Requests",
-    href: "/donation-requests",
-  },
-  {
-    label: "Search Donors",
-    href: "/donors",
-  },
-  {
-    label: "About",
-    href: "/about",
-  },
-];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data, isPending } = authClient.useSession();
   const user = data?.user;
+  const navLinks = [
+    {
+      label: "Home",
+      href: "/",
+    },
+    {
+      label: "Donation Requests",
+      href: "/donation-requests",
+    },
+    {
+      label: "Search Donors",
+      href: "/donors",
+    },
+    ...(user
+      ? [
+          {
+            label: "Funding",
+            href: "/funding",
+          },
+        ]
+      : []),
+    {
+      label: "About",
+      href: "/about",
+    },
+  ];
 
-  // if (isPending) {
-  //   return (
-  //     <div className="h-10 w-10 animate-pulse rounded-full bg-default-200" />
-  //   );
-  // }
+  if (isPending) {
+    return <RootLoadingPage></RootLoadingPage>;
+  }
 
   return (
     <header className="sticky top-0 z-50 bg-black/20 backdrop-blur-md">

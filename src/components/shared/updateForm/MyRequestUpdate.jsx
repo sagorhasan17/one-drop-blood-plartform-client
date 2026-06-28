@@ -147,7 +147,7 @@ const MyRequestUpdate = ({ requestData }) => {
 
           {/* Footer Actions */}
           <div className="flex flex-col-reverse justify-end gap-4 sm:flex-row sm:items-center">
-            <Link href={`/dashboard/donor/request-donor/my-requests`}>
+            <Link href={`/dashboard/volunteer/all-public-requests`}>
               <Button
                 variant="flat"
                 size="lg"

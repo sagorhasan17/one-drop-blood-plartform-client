@@ -3,7 +3,7 @@
 import { Button, Chip, Table } from "@heroui/react";
 import Link from "next/link";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FiEdit, FiEye, FiMail, FiTrash2, FiUser } from "react-icons/fi";
+import { FiEdit, FiEye, FiMail, FiUser } from "react-icons/fi";
 import { MdOutlineLocationOn } from "react-icons/md";
 
 const statusColorMap = {
@@ -133,7 +133,7 @@ export default function AllRequestTable({ requests = [] }) {
                         </Button>
                       </Link>
                       <Link
-                        href={`/dashboard/donor/request-donor/my-requests/${user._id}`}
+                        href={`/dashboard/manage-donation-request/${user._id}`}
                       >
                         <Button
                           isIconOnly
