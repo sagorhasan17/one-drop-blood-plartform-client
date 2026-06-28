@@ -1,6 +1,10 @@
 import { FundingModel } from "@/components/shared/modal/FundingModel";
+import { getFundingHistory } from "@/lib/api/funding";
+import FundHistoryTable from "./FundHistoryTable";
 
-const FundingPage = () => {
+const FundingPage = async () => {
+  const fundingHistory = await getFundingHistory();
+  const data = fundingHistory?.data;
   return (
     <section className="flex flex-col gap-4">
       <div className="container mx-auto">
@@ -18,6 +22,10 @@ const FundingPage = () => {
           <div>
             <FundingModel />
           </div>
+        </div>
+
+        <div>
+          <FundHistoryTable data={data} />
         </div>
       </div>
     </section>
