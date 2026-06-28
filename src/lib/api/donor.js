@@ -27,6 +27,29 @@ export const getAllDonorsRequest = async (token) => {
   }
 };
 
+//get all filters donors request
+export const getFilteredDonorsRequest = async (queryString) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-filter-donors-requests?${queryString}`,
+      {
+        cache: "no-store",
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+      },
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch donors");
+    }
+    const resData = await res.json();
+    return resData.data;
+  } catch (error) {
+    console.log("Error fetching donors:", error);
+    return [];
+  }
+};
+
 //get DonationRequest by Id
 export const getDonorById = async (id, token) => {
   try {

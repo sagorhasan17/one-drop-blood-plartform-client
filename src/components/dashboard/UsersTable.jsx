@@ -4,6 +4,7 @@ import { updateUserRole } from "@/lib/api/users";
 import { Avatar, Chip, Table } from "@heroui/react";
 import { useState } from "react";
 import { FiMail, FiUser } from "react-icons/fi";
+import { toast } from "react-toastify";
 import { DotDropDown } from "../shared/modal/DotDropDown";
 
 const statusColorMap = {
@@ -28,6 +29,14 @@ export default function UsersTable({ users = [] }) {
             : user,
         ),
       );
+      toast.success("Role Updated Successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } catch (error) {
       console.log(error);
     }
