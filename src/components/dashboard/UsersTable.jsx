@@ -1,9 +1,9 @@
 "use client";
 
-import { Avatar, Button, Chip, Table } from "@heroui/react";
-import Link from "next/link";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { FiEdit, FiEye, FiMail, FiUser } from "react-icons/fi";
+import { updateUserRole } from "@/lib/api/users";
+import { Avatar, Chip, Table } from "@heroui/react";
+import { useState } from "react";
+import { FiMail, FiUser } from "react-icons/fi";
 import { DotDropDown } from "../shared/modal/DotDropDown";
 
 const statusColorMap = {
@@ -12,14 +12,32 @@ const statusColorMap = {
 };
 
 export default function UsersTable({ users = [] }) {
+  const [userList, setUserList] = useState(users);
+
+  const handleRoleChange = async (userId, role) => {
+    try {
+      await updateUserRole(userId, role);
+
+      setUserList((prev) =>
+        prev.map((user) =>
+          user._id === userId
+            ? {
+                ...user,
+                role,
+              }
+            : user,
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="overflow-hidden rounded-3xl border border-default-200 bg-white shadow-sm">
       <Table>
         <Table.ScrollContainer>
-          <Table.Content
-            aria-label="My Donation Requests"
-            className="min-w-275"
-          >
+          <Table.Content aria-label="All Users" className="min-w-225">
             <Table.Header>
               <Table.Column>ID</Table.Column>
               <Table.Column isRowHeader>User Profile</Table.Column>
@@ -28,8 +46,9 @@ export default function UsersTable({ users = [] }) {
               <Table.Column>Status</Table.Column>
               <Table.Column className="text-end">Actions</Table.Column>
             </Table.Header>
+
             <Table.Body
-              items={users}
+              items={userList}
               emptyContent={
                 <div className="py-10 text-center text-default-500">
                   No users found
@@ -45,17 +64,17 @@ export default function UsersTable({ users = [] }) {
                     </span>
                   </Table.Cell>
 
-                  {/* User Profile */}
+                  {/* User */}
                   <Table.Cell>
                     <div className="flex items-center gap-3">
                       <Avatar>
                         <Avatar.Image
-                          src={user?.image || user.profilePhoto}
+                          src={user?.image || user?.profilePhoto}
                           alt={user?.name}
                           referrerPolicy="no-referrer"
                         />
                         <Avatar.Fallback>
-                          {user.name?.charAt(0) || "U"}
+                          {user?.name?.charAt(0) || "U"}
                         </Avatar.Fallback>
                       </Avatar>
 
@@ -76,7 +95,7 @@ export default function UsersTable({ users = [] }) {
                     </div>
                   </Table.Cell>
 
-                  {/* Current Role */}
+                  {/* Role */}
                   <Table.Cell>
                     <Chip
                       size="sm"
@@ -84,7 +103,7 @@ export default function UsersTable({ users = [] }) {
                       color={
                         user?.role === "admin"
                           ? "danger"
-                          : user.role === "volunteer"
+                          : user?.role === "volunteer"
                             ? "warning"
                             : "primary"
                       }
@@ -99,7 +118,7 @@ export default function UsersTable({ users = [] }) {
                     <Chip
                       size="sm"
                       variant="flat"
-                      color={statusColorMap[user.status] || "default"}
+                      color={statusColorMap[user?.status] || "default"}
                       className="capitalize"
                     >
                       {user?.status}
@@ -108,8 +127,11 @@ export default function UsersTable({ users = [] }) {
 
                   {/* Actions */}
                   <Table.Cell>
-                    <div>
-                      <DotDropDown />
+                    <div className="flex justify-end">
+                      <DotDropDown
+                        userId={user._id}
+                        onRoleChange={handleRoleChange}
+                      />
                     </div>
                   </Table.Cell>
                 </Table.Row>

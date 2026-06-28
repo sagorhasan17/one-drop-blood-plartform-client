@@ -13,11 +13,19 @@ export const getSession = async () => {
   return user;
 };
 
+//get session token
+export const getUserToken = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  return session?.session?.token;
+};
+
 // role: donor, volunteer
 export const requestRole = async (role) => {
   const user = await getSession();
-  console.log("user in requestRole", user.role);
-  console.log("role in requestRole", role);
+  // console.log("user in requestRole", user.role);
+  // console.log("role in requestRole", role);
   if (!user) {
     return redirect("/login");
   }

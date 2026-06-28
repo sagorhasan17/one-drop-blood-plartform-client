@@ -5,9 +5,9 @@ import { getAllDonorsRequest } from "@/lib/api/donor";
 import { TbCoinTakaFilled } from "react-icons/tb";
 import DashboardStatCard from "./DashboardStatCard";
 
-const AdminDashboard = async () => {
-  const usersRes = await getAllUsers();
-  const requestsRes = await getAllDonorsRequest();
+const AdminDashboard = async ({ token }) => {
+  const usersRes = await getAllUsers(token);
+  const requestsRes = await getAllDonorsRequest(token);
   const users = usersRes?.data || [];
   const totalUsers = users.length;
   const totalRequests = requestsRes.length;

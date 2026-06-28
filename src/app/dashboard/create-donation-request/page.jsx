@@ -25,8 +25,10 @@ const CreateDonationRequestPage = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const { data, isPending } = authClient.useSession();
-  const user = data?.user;
+  const session = authClient.useSession();
+  const user = session?.data?.user;
+  const isPending = session?.isPending;
+  const token = session?.data?.session?.token;
 
   if (isPending) {
     return <RootLoadingPage />;
@@ -79,7 +81,7 @@ const CreateDonationRequestPage = () => {
         createdAt: new Date().toISOString(),
         ...formValues,
       };
-      const payload = await createDonor(finalSubmissionData);
+      const payload = await createDonor(finalSubmissionData, token);
       if (payload.insertedId) {
         toast.success("Donor Request Created Successfully", {
           position: "top-center",

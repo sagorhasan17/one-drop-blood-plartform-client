@@ -58,12 +58,12 @@ export function DashboardSideBar() {
         ]
       : []),
 
-    ...(role === "volunteer"
+    ...(role === "volunteer" || role === "admin"
       ? [
           {
             icon: FaHandsHelping,
             label: "All Public Requests",
-            href: "/dashboard/volunteer/all-public-requests",
+            href: "/dashboard/all-public-requests",
           },
         ]
       : []),

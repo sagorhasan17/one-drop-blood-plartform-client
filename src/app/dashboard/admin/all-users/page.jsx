@@ -1,8 +1,14 @@
 import UsersTable from "@/components/dashboard/UsersTable";
 import { getAllUsers } from "@/lib/api/users";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 const AllUsersPage = async () => {
-  const res = await getAllUsers();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const token = session?.session?.token;
+  const res = await getAllUsers(token);
   const users = res.data;
   if (!users) {
     return (

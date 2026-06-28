@@ -15,6 +15,7 @@ const DashboardHomePage = async () => {
     return redirect("/login");
   }
   const { user, isPending } = session;
+  const token = session?.session?.token;
   const role = user?.role;
   if (!user) {
     return redirect("/login");
@@ -74,7 +75,7 @@ const DashboardHomePage = async () => {
       </div>
       <div>
         {role === "admin" ? (
-          <AdminDashboard />
+          <AdminDashboard token={token} />
         ) : role === "volunteer" ? (
           <VolunteerDashboard />
         ) : (

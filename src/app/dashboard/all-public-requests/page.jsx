@@ -4,10 +4,11 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 const AllPublicRequests = async () => {
-  const requests = await getAllDonorsRequest();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  const token = session?.session?.token;
+  const requests = await getAllDonorsRequest(token);
 
   const user = session?.user;
   if (!user) {

@@ -1,21 +1,43 @@
 "use client";
 
-import { Button, Dropdown, Label } from "@heroui/react";
+import { Button, Dropdown } from "@heroui/react";
 import { HiDotsVertical } from "react-icons/hi";
 
-export function DotDropDown() {
+export function DotDropDown({ userId, onRoleChange }) {
   return (
     <Dropdown>
-      <Button isIconOnly aria-label="Menu" variant="secondary">
-        <HiDotsVertical className="outline-none" />
+      <Button isIconOnly variant="secondary">
+        <HiDotsVertical />
       </Button>
+
       <Dropdown.Popover>
-        <Dropdown.Menu onAction={(key) => console.log(`Selected: ${key}`)}>
-          <Dropdown.Item id="new-file" textValue="New file">
-            <Label>Make Volunteer</Label>
+        <Dropdown.Menu>
+          <Dropdown.Item
+            key="admin"
+            onPress={() => onRoleChange(userId, "admin")}
+          >
+            Make Admin
           </Dropdown.Item>
-          <Dropdown.Item id="copy-link" textValue="Copy link">
-            <Label>Block </Label>
+          <Dropdown.Item
+            key="volunteer"
+            onPress={() => onRoleChange(userId, "volunteer")}
+          >
+            Make Volunteer
+          </Dropdown.Item>
+          <Dropdown.Item
+            key="donor"
+            onPress={() => onRoleChange(userId, "donor")}
+          >
+            Make Donor
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            key="blocked"
+            color="danger"
+            className="text-danger"
+            onPress={() => onRoleChange(userId, "blocked")}
+          >
+            Block User
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown.Popover>

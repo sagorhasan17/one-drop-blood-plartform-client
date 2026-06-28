@@ -17,12 +17,13 @@ import { FaFilePen } from "react-icons/fa6";
 
 const DonationRequestDetailsPage = async ({ params }) => {
   const { id } = await params;
-  const donorDetails = await getDonorById(id);
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  const token = session?.session?.token;
+  const donorDetails = await getDonorById(id, token);
+
   const user = session?.user;
-  console.log("user", user);
   if (!user) {
     return redirect("/login");
   }

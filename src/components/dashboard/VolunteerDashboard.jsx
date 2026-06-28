@@ -2,11 +2,17 @@ import { getAllUsers } from "@/lib/api/users";
 import { FaTint, FaUserCheck, FaUsers } from "react-icons/fa";
 
 import { getAllDonorsRequest } from "@/lib/api/donor";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { TbCoinTakaFilled } from "react-icons/tb";
 import DashboardStatCard from "./DashboardStatCard";
 
 const VolunteerDashboard = async () => {
-  const usersRes = await getAllUsers();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const token = session?.session?.token;
+  const usersRes = await getAllUsers(token);
   const requestsRes = await getAllDonorsRequest();
   const users = usersRes?.data || [];
   const totalUsers = users.length;

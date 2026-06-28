@@ -1,19 +1,21 @@
-export const getAllUsers = async () => {
+export const getAllUsers = async (token) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-users`,
       {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
         cache: "no-store",
+        headers: {
+          ...(token && {
+            Authorization: `Bearer ${token}`,
+          }),
+        },
       },
     );
+    const result = await response.json();
     if (!response.ok) {
-      throw new Error(`Failed to fetch users. Status: ${response.status}`);
+      throw new Error(result?.message || "Failed to fetch users");
     }
-    return await response.json();
+    return result;
   } catch (error) {
     console.error("Error fetching users:", error);
     throw error;
@@ -21,7 +23,7 @@ export const getAllUsers = async () => {
 };
 
 //update user
-export const updateProfile = async (profileData) => {
+export const updateProfile = async (profileData, token) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/update-profile`,
@@ -29,6 +31,7 @@ export const updateProfile = async (profileData) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(profileData),
       },
@@ -45,4 +48,20 @@ export const updateProfile = async (profileData) => {
     console.error("Update Profile API Error:", error);
     throw error;
   }
+};
+
+//update role
+export const updateUserRole = async (id, role) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${id}/role`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ role }),
+    },
+  );
+
+  return res.json();
 };

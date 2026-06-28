@@ -2,9 +2,9 @@
 
 import { Button, Chip, Table } from "@heroui/react";
 import Link from "next/link";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit, FiEye, FiMail, FiUser } from "react-icons/fi";
 import { MdOutlineLocationOn } from "react-icons/md";
+import { DotDropDown } from "../shared/modal/DotDropDown";
 
 const statusColorMap = {
   Active: "success",
@@ -17,6 +17,24 @@ const statusColorMap = {
 };
 
 export default function MyRequestsTable({ users = [] }) {
+  const handleRoleChange = async (userId, role) => {
+    try {
+      await updateUserRole(userId, role);
+
+      setUserList((prev) =>
+        prev.map((user) =>
+          user._id === userId
+            ? {
+                ...user,
+                role,
+              }
+            : user,
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="overflow-hidden rounded-3xl border border-default-200 bg-white shadow-sm">
       <Table>
@@ -145,15 +163,10 @@ export default function MyRequestsTable({ users = [] }) {
                         </Button>
                       </Link>
 
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        color="danger"
-                        variant="light"
-                        aria-label="Delete"
-                      >
-                        <BsThreeDotsVertical size={16} />
-                      </Button>
+                      <DotDropDown
+                        userId={user._id}
+                        onRoleChange={handleRoleChange}
+                      />
                     </div>
                   </Table.Cell>
                 </Table.Row>

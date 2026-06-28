@@ -1,9 +1,15 @@
 import DonationCard from "@/components/shared/card/DonationCard";
 import { getAllDonorsRequest } from "@/lib/api/donor";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { FaHeartbeat, FaTint } from "react-icons/fa";
 
 const DonationRequestsPage = async () => {
-  const requests = await getAllDonorsRequest();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const token = session?.session?.token;
+  const requests = await getAllDonorsRequest(token);
 
   return (
     <section className="relative overflow-hidden py-4 lg:py-24">

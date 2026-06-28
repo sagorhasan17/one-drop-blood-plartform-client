@@ -33,6 +33,7 @@ const ProfilePage = () => {
     status: "",
   });
   const session = authClient.useSession();
+  const token = session?.data?.session?.token;
   const router = useRouter();
   if (!session) {
     return router.push("/login");
@@ -95,7 +96,7 @@ const ProfilePage = () => {
   };
 
   const handleSave = async () => {
-    const res = await updateProfile(formData);
+    const res = await updateProfile(formData, token);
     if (res.success) {
       toast.success("Profile Updated Successfully", {
         position: "top-center",
