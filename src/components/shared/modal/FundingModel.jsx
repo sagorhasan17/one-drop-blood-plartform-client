@@ -30,7 +30,7 @@ export function FundingModel() {
 
       <Modal.Backdrop className="bg-black/50 backdrop-blur-sm">
         <Modal.Container placement="center">
-          <Modal.Dialog className="max-w-md overflow-hidden rounded-[32px] border border-white/20 bg-white shadow-[0_25px_80px_rgba(239,68,68,0.12)]">
+          <Modal.Dialog className="max-w-md overflow-hidden rounded-[32px] border border-white/20 bg-black/70 shadow-[0_25px_80px_rgba(239,68,68,0.12)]">
             <Modal.CloseTrigger />
 
             <Modal.Body className="px-8 py-10">
@@ -44,11 +44,11 @@ export function FundingModel() {
                     <FaShieldHeart className="text-2xl text-red-500" />
                   </div>
 
-                  <h2 className="text-3xl font-bold text-slate-900">
+                  <h2 className="text-3xl font-bold text-gray-200">
                     Confirm Donation
                   </h2>
 
-                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-slate-500">
+                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-slate-300">
                     enter the amount you want to donate
                   </p>
                 </div>
@@ -56,8 +56,8 @@ export function FundingModel() {
                 {/* Donor Info */}
                 <div className="mt-8 space-y-5">
                   <TextField>
-                    <div className="flex items-center h-14 rounded-2xl border border-slate-200 bg-slate-50 px-4">
-                      <FaDollarSign className="text-gray-400 text-lg mr-3" />
+                    <div className="flex items-center h-14 rounded-2xl border border-slate-400 bg-gray-800 px-4">
+                      <FaDollarSign className="text-gray-100 text-lg mr-3" />
 
                       <Input
                         type="number"

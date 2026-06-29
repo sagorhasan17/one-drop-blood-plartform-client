@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FaArrowRight, FaHandHoldingHeart } from "react-icons/fa";
 import { FaShieldHeart } from "react-icons/fa6";
 import { toast } from "react-toastify";
 
-export function DonateModal({ user, requestId, status = "pending" }) {
+export function DonateModal({
+  user,
+  requestId,
+  status = "pending",
+  userStatus,
+}) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -68,7 +73,7 @@ export function DonateModal({ user, requestId, status = "pending" }) {
       {/* Trigger Button */}
       <Button
         variant="danger"
-        isDisabled={isDisabled}
+        isDisabled={userStatus !== "active" || isDisabled}
         className={`w-full h-14 rounded-full font-semibold flex items-center justify-center gap-3 shadow-lg ${
           isDisabled ? "opacity-60 cursor-not-allowed" : ""
         }`}

@@ -1,26 +1,16 @@
 import DonationCard from "@/components/shared/card/DonationCard";
-import { getAllDonorsRequest } from "@/lib/api/donor";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { getAllDonorsRequestWithoutToken } from "@/lib/api/donor";
 import { FaHeartbeat, FaTint } from "react-icons/fa";
 
 const DonationRequestsPage = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const token = session?.session?.token;
-  const requests = await getAllDonorsRequest(token);
+  const requests = await getAllDonorsRequestWithoutToken();
 
   return (
-    <section className="relative overflow-hidden py-4 lg:py-24">
-      {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-b from-red-50/60 via-white to-orange-50/60" />
-      <div className="absolute top-0 left-0 w-96 h-96 bg-red-200/30 blur-[120px] rounded-full" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-orange-200/30 blur-[120px] rounded-full" />
+    <section className="relative overflow-hidden py-4 lg:py-24 bg-gray-900">
       <div className="container relative mx-auto px-4">
         {/* Header */}
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/80 backdrop-blur-xl border border-red-100 shadow-sm text-red-500 font-medium">
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-black/80 backdrop-blur-xl border border-red-100 shadow-sm text-red-500 font-medium">
             <FaTint />
             Blood Donation Requests
           </div>
@@ -33,19 +23,19 @@ const DonationRequestsPage = async () => {
 
           {/* Stats */}
           <div className="flex flex-wrap justify-center gap-4 mt-6 mb-6">
-            <div className="px-6 py-3 rounded-2xl bg-white/70 backdrop-blur-xl border border-default-100 shadow-sm">
+            <div className="px-6 py-3 rounded-2xl bg-black/70 backdrop-blur-xl border border-default-100 shadow-sm">
               <p className="text-2xl font-bold text-danger">
                 {requests?.length || 0}
               </p>
               <p className="text-sm text-default-500">Active Requests</p>
             </div>
 
-            <div className="px-6 py-3 rounded-2xl bg-white/70 backdrop-blur-xl border border-default-100 shadow-sm">
+            <div className="px-6 py-3 rounded-2xl bg-black/70 backdrop-blur-xl border border-default-100 shadow-sm">
               <p className="text-2xl font-bold text-orange-500">24/7</p>
               <p className="text-sm text-default-500">Emergency Support</p>
             </div>
 
-            <div className="px-6 py-3 rounded-2xl bg-white/70 backdrop-blur-xl border border-default-100 shadow-sm">
+            <div className="px-6 py-3 rounded-2xl bg-black/70 backdrop-blur-xl border border-default-100 shadow-sm">
               <p className="text-2xl font-bold text-red-500">
                 <FaHeartbeat className="inline" />
               </p>

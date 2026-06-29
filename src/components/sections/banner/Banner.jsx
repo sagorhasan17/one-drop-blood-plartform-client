@@ -54,7 +54,7 @@ const Banner = () => {
               </Button>
             </Link>
 
-            <Link href="/donors">
+            <Link href="/search">
               <Button
                 size="lg"
                 radius="full"

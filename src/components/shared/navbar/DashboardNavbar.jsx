@@ -39,7 +39,7 @@ const DashboardNavbar = () => {
             </Link>
             <div>
               <h2 className="text-md font-bold">Dashboard</h2>
-              <h3 className="text-sm font-medium text-black/30">
+              <h3 className="text-sm font-medium text-gray-300">
                 Welcome back , {user?.role || "donor"}
               </h3>
             </div>

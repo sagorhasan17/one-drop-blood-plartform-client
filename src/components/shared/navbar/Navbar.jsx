@@ -25,10 +25,6 @@ const Navbar = () => {
       label: "Donation Requests",
       href: "/donation-requests",
     },
-    {
-      label: "Search Donors",
-      href: "/donors",
-    },
     ...(user
       ? [
           {

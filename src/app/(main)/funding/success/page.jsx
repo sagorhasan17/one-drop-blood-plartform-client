@@ -43,8 +43,8 @@ export default async function Success({ searchParams }) {
   } catch (error) {}
 
   return (
-    <main className="min-h-screen bg-slate-50 flex items-center justify-center px-5 py-16">
-      <div className="w-full max-w-3xl rounded-3xl bg-white border shadow-xl">
+    <main className="min-h-screen bg-black/70 flex items-center justify-center px-5 py-16">
+      <div className="w-full max-w-3xl rounded-3xl bg-black/70 border shadow-xl">
         <div className="border-b p-10 text-center">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
             <FaCheckCircle className="text-5xl text-green-600" />
@@ -76,7 +76,7 @@ export default async function Success({ searchParams }) {
             <div className="flex justify-between border-b pb-3">
               <span>Status</span>
 
-              <span className="rounded-full bg-green-100 px-3 py-1 text-green-700">
+              <span className="rounded-full bg-black/70 px-3 py-1 text-green-700">
                 {paymentData.paymentStatus}
               </span>
             </div>

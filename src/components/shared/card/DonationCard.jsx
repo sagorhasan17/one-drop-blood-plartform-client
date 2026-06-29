@@ -11,7 +11,8 @@ import {
 
 const DonationCard = ({ request }) => {
   if (!request) return null;
-  const formattedDate = request?.requiredDate? new Date(request.requiredDate).toLocaleDateString("en-US", {
+  const formattedDate = request?.requiredDate
+    ? new Date(request.requiredDate).toLocaleDateString("en-US", {
         day: "numeric",
         month: "short",
         year: "numeric",
@@ -47,7 +48,7 @@ const DonationCard = ({ request }) => {
   return (
     <div className="h-full">
       {/* Card Container */}
-      <div className="relative flex h-full flex-col overflow-hidden bg-white border border-red-50 p-5 rounded-br-xl rounded-xl">
+      <div className="relative flex h-full flex-col overflow-hidden bg-black/70 border border-red-400 p-5 rounded-br-xl rounded-xl">
         {/* Top Header Section */}
         <div className="flex items-start justify-between">
           <div className="flex h-16 w-16 flex-col items-center justify-center rounded-[20px] bg-linear-to-br from-red-500 via-red-600 to-orange-500 shadow-lg shadow-red-500/25">
@@ -58,14 +59,14 @@ const DonationCard = ({ request }) => {
             </span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 rounded-full bg-orange-500/80 border border-orange-100 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-1.5 px-3 rounded-full bg-gray-700 border border-gray-500 backdrop-blur-sm">
             {" "}
             <span className="relative flex h-2 w-2">
               {" "}
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>{" "}
               <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>{" "}
             </span>{" "}
-            <span className="text-[10px] font-bold uppercase tracking-widest text-orange-600">
+            <span className="text-md px-3 py-0 font-bold uppercase  text-orange-600">
               {" "}
               {request?.status || "URGENT"}{" "}
             </span>{" "}
@@ -74,10 +75,10 @@ const DonationCard = ({ request }) => {
 
         {/* Recipient Info Section */}
         <div className="mt-5 mb-4">
-          <h2 className="text-xl font-bold text-gray-900 line-clamp-1">
+          <h2 className="text-xl font-bold text-gray-300 line-clamp-1">
             {request?.recipientName || "Unknown Recipient"}
           </h2>
-          <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+          <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-gray-300">
             Blood Recipient Information
           </p>
         </div>
@@ -90,10 +91,10 @@ const DonationCard = ({ request }) => {
               <FaMapMarkerAlt size={14} />
             </div>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 leading-none mb-1">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-300 leading-none mb-1">
                 Location
               </p>
-              <p className="text-sm font-medium text-gray-800 line-clamp-1 leading-tight">
+              <p className="text-sm font-medium text-gray-300 line-clamp-1 leading-tight">
                 {request?.upazila}, {request?.districtName}
               </p>
             </div>
@@ -105,10 +106,10 @@ const DonationCard = ({ request }) => {
               <FaCalendarAlt size={14} />
             </div>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 leading-none mb-1">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-300 leading-none mb-1">
                 Required Date
               </p>
-              <p className="text-sm font-medium text-gray-800 leading-tight">
+              <p className="text-sm font-medium text-gray-300 leading-tight">
                 {formattedDate}{" "}
                 {request?.requiredTime ? `| ${request.requiredTime}` : ""}
               </p>
@@ -122,10 +123,10 @@ const DonationCard = ({ request }) => {
                 <FaHospital size={14} />
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 leading-none mb-1">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-300 leading-none mb-1">
                   Hospital
                 </p>
-                <p className="text-sm font-medium text-gray-800 line-clamp-1 leading-tight">
+                <p className="text-sm font-medium text-gray-300 line-clamp-1 leading-tight">
                   {request.hospitalName}
                 </p>
               </div>
@@ -134,7 +135,7 @@ const DonationCard = ({ request }) => {
         </div>
 
         {/* Action Button: Fix applied here (Removed Link wrapper, used as={Link}) */}
-        <div className="mt-6 pt-4 border-t border-gray-50">
+        <div className="mt-6 pt-4 border-t border-gray-600">
           <Link
             href={`/dashboard/donation-request-details/${request?._id || ""}`}
           >

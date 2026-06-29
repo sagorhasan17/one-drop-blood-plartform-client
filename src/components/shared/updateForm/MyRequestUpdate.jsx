@@ -38,7 +38,7 @@ const MyRequestUpdate = ({ requestData }) => {
               isIconOnly
               variant="flat"
               radius="full"
-              className="h-12 w-12 bg-default-100 text-default-600 transition-transform hover:-translate-x-1"
+              className="h-12 w-12 bg-black/70 text-default-600 transition-transform hover:-translate-x-1"
               onClick={() => router.back()}
             >
               <FiArrowLeft className="text-xl" />
@@ -66,7 +66,7 @@ const MyRequestUpdate = ({ requestData }) => {
       </div>
 
       {/* Form Container */}
-      <div className="rounded-[2.5rem] border border-default-100 bg-white p-6 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] dark:bg-content1 md:p-12">
+      <div className="rounded-[2.5rem] border border-default-100 bg-black/70 p-6 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] dark:bg-content1 md:p-12">
         <form onSubmit={handleUpdate}>
           {/* Input Grid Layout */}
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-x-10 md:gap-y-8">
@@ -80,7 +80,7 @@ const MyRequestUpdate = ({ requestData }) => {
                 name="recipientName"
                 defaultValue={requestData?.recipientName}
                 required
-                className="h-14 w-full rounded-2xl border border-transparent bg-default-50 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
+                className="h-14 w-full rounded-2xl border border-transparent bg-black/70 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-black/70 focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
               />
             </div>
 
@@ -94,7 +94,7 @@ const MyRequestUpdate = ({ requestData }) => {
                 name="districtName"
                 defaultValue={requestData?.districtName}
                 required
-                className="h-14 w-full rounded-2xl border border-transparent bg-default-50 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
+                className="h-14 w-full rounded-2xl border border-transparent bg-black/70 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
               />
             </div>
 
@@ -108,7 +108,7 @@ const MyRequestUpdate = ({ requestData }) => {
                 name="upazila"
                 defaultValue={requestData?.upazila}
                 required
-                className="h-14 w-full rounded-2xl border border-transparent bg-default-50 px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
+                className="h-14 w-full rounded-2xl border border-transparent px-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 bg-black/70 focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100"
               />
             </div>
 
@@ -137,7 +137,7 @@ const MyRequestUpdate = ({ requestData }) => {
                 defaultValue={requestData?.fullAddress}
                 required
                 rows={4}
-                className="w-full rounded-2xl border border-transparent bg-default-50 p-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 focus:bg-white focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100 resize-none"
+                className="w-full rounded-2xl border border-transparent bg-default-50 p-5 font-bold text-default-900 outline-none transition-all placeholder:text-default-400 bg-black/70 focus:border-red-400 focus:ring-4 focus:ring-red-500/10 dark:focus:bg-default-100 resize-none"
               />
             </div>
           </div>

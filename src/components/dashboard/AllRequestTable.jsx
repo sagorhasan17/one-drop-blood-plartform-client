@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, Chip, Table } from "@heroui/react";
+import { Button, Chip, Pagination, Table } from "@heroui/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit, FiEye, FiMail, FiUser } from "react-icons/fi";
 import { MdOutlineLocationOn } from "react-icons/md";
@@ -17,8 +18,35 @@ const statusColorMap = {
 };
 
 export default function AllRequestTable({ requests = [] }) {
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalItems = requests.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  // Current page data
+  const paginatedRequests = requests.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage,
+  );
+
+  // Summary
+  const startItem = totalItems === 0 ? 0 : (page - 1) * itemsPerPage + 1;
+  const endItem = Math.min(page * itemsPerPage, totalItems);
+
+  // Generate page numbers
+  const getPageNumbers = () => {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  };
+
+  // Reset page if data changes
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      setPage(1);
+    }
+  }, [page, totalPages]);
+
   return (
-    <div className="overflow-hidden rounded-3xl border border-default-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-3xl border border-default-200 bg-black shadow-sm mb-3 py-4 px-4">
       <Table>
         <Table.ScrollContainer>
           <Table.Content
@@ -31,6 +59,7 @@ export default function AllRequestTable({ requests = [] }) {
               <Table.Column isRowHeader>Recipient</Table.Column>
 
               <Table.Column>Email</Table.Column>
+
               <Table.Column>Location</Table.Column>
 
               <Table.Column>Blood Group</Table.Column>
@@ -41,7 +70,7 @@ export default function AllRequestTable({ requests = [] }) {
             </Table.Header>
 
             <Table.Body
-              items={requests}
+              items={paginatedRequests}
               emptyContent={
                 <div className="py-10 text-center text-default-500">
                   No donation requests found
@@ -58,11 +87,6 @@ export default function AllRequestTable({ requests = [] }) {
 
                   <Table.Cell>
                     <div className="flex items-center gap-3">
-                      {/* <Avatar
-                        size="sm"
-                        name={user?.recipientName || user?.name}
-                      /> */}
-
                       <div>
                         <p className="font-semibold text-default-900 flex items-center gap-2">
                           <FiUser
@@ -71,7 +95,6 @@ export default function AllRequestTable({ requests = [] }) {
                           />
                           {user?.recipientName}
                         </p>
-                        {/* <p className="text-xs text-default-500">Recipient</p> */}
                       </div>
                     </div>
                   </Table.Cell>
@@ -132,6 +155,7 @@ export default function AllRequestTable({ requests = [] }) {
                           <FiEye size={16} />
                         </Button>
                       </Link>
+
                       <Link
                         href={`/dashboard/manage-donation-request/${user._id}`}
                       >
@@ -162,6 +186,42 @@ export default function AllRequestTable({ requests = [] }) {
           </Table.Content>
         </Table.ScrollContainer>
       </Table>
+
+      <Pagination>
+        <Pagination.Summary>
+          Showing {startItem}-{endItem} of {totalItems} results
+        </Pagination.Summary>
+
+        <Pagination.Content>
+          <Pagination.Item>
+            <Pagination.Previous
+              isDisabled={page === 1}
+              onPress={() => setPage((p) => p - 1)}
+            >
+              <Pagination.PreviousIcon />
+              <span>Previous</span>
+            </Pagination.Previous>
+          </Pagination.Item>
+
+          {getPageNumbers().map((p) => (
+            <Pagination.Item key={p}>
+              <Pagination.Link isActive={p === page} onPress={() => setPage(p)}>
+                {p}
+              </Pagination.Link>
+            </Pagination.Item>
+          ))}
+
+          <Pagination.Item>
+            <Pagination.Next
+              isDisabled={page === totalPages || totalPages === 0}
+              onPress={() => setPage((p) => p + 1)}
+            >
+              <span>Next</span>
+              <Pagination.NextIcon />
+            </Pagination.Next>
+          </Pagination.Item>
+        </Pagination.Content>
+      </Pagination>
     </div>
   );
 }

@@ -26,6 +26,25 @@ export const getAllDonorsRequest = async (token) => {
     return [];
   }
 };
+//get all donationRequest with out token
+export const getAllDonorsRequestWithoutToken = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-donors-requests-no-token`,
+      {
+        cache: "no-store",
+      },
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch donors");
+    }
+    const resData = await res.json();
+    return resData.data;
+  } catch (error) {
+    console.log("Error fetching donors:", error);
+    return [];
+  }
+};
 
 //get all filters donors request
 export const getFilteredDonorsRequest = async (queryString) => {

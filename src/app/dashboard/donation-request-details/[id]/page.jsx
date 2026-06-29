@@ -24,6 +24,7 @@ const DonationRequestDetailsPage = async ({ params }) => {
   const donorDetails = await getDonorById(id, token);
 
   const user = session?.user;
+  const userStatus = user?.status;
   if (!user) {
     return redirect("/login");
   }
@@ -41,7 +42,7 @@ const DonationRequestDetailsPage = async ({ params }) => {
   } = donorDetails;
 
   return (
-    <section className="min-h-screen bg-linear-to-b from-white via-red-50/30 to-white py-12 px-4">
+    <section className="min-h-screen bg-linear-to-b from-black via-red-50/30 to-black py-12 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -59,7 +60,7 @@ const DonationRequestDetailsPage = async ({ params }) => {
         </div>
 
         {/* Status */}
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center gap-2 mb-6">
           <Chip
             color={
               status === "done"
@@ -73,28 +74,36 @@ const DonationRequestDetailsPage = async ({ params }) => {
           >
             {status || "Pending"}
           </Chip>
+          {userStatus === "blocked" && (
+            <>
+              <Chip color="info" variant="flat" size="lg">
+                {`you can't accept this request, because your status is : `}
+                <span className="text-red-500">{userStatus}</span>
+              </Chip>
+            </>
+          )}
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-[32px] border border-red-100 shadow-xl overflow-hidden">
+        <div className="bg-black/70 rounded-[32px] border border-gray-200 p-8">
           {/* Top Section */}
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6 p-8">
             <div className="flex items-center gap-5">
-              <div className="h-20 w-20 rounded-3xl bg-red-50 border border-red-100 flex items-center justify-center shadow">
+              <div className="h-20 w-20 rounded-3xl bg-black/70 border border-gray-400 flex items-center justify-center shadow">
                 <FaUser className="text-red-500 text-3xl" />
               </div>
 
               <div>
                 <h2 className="text-3xl font-bold">{recipientName}</h2>
 
-                <p className="uppercase text-xs tracking-[3px] text-gray-400 mt-1">
+                <p className="uppercase text-xs tracking-[3px] text-gray-200 mt-1">
                   Recipient • Patient
                 </p>
               </div>
             </div>
 
             {/* Blood Group */}
-            <div className="bg-red-50 border border-red-100 rounded-3xl px-5 py-4 flex items-center gap-4">
+            <div className="bg-black/70 border border-gray-400 rounded-3xl px-5 py-4 flex items-center gap-4">
               <div className="w-20 h-20 rounded-2xl bg-red-500  flex items-center justify-center font-extrabold text-4xl">
                 {bloodGroup}
               </div>
@@ -115,8 +124,8 @@ const DonationRequestDetailsPage = async ({ params }) => {
           {/* Content */}
           <div className="grid md:grid-cols-2">
             {/* Left */}
-            <div className="p-8 border-r border-gray-100">
-              <h3 className="uppercase tracking-[4px] text-xs text-gray-400 font-bold mb-8">
+            <div className="p-8 border-r border-gray-400">
+              <h3 className="uppercase tracking-[4px] text-xs text-gray-200 font-bold mb-8">
                 Location Details
               </h3>
 
@@ -127,7 +136,7 @@ const DonationRequestDetailsPage = async ({ params }) => {
                   </div>
 
                   <div>
-                    <p className="uppercase text-xs text-gray-400">Hospital</p>
+                    <p className="uppercase text-xs text-gray-200">Hospital</p>
 
                     <h4 className="font-bold text-xl">{hospitalName}</h4>
 
@@ -196,25 +205,30 @@ const DonationRequestDetailsPage = async ({ params }) => {
 
           {/* Footer */}
           <div className="border-t border-gray-100 p-6">
-            <DonateModal user={user} requestId={id} status={status} />
+            <DonateModal
+              user={user}
+              requestId={id}
+              status={status}
+              userStatus={userStatus}
+            />
           </div>
         </div>
 
         {/* Stats */}
         <div className="grid md:grid-cols-3 gap-5 mt-8">
-          <div className="bg-white rounded-3xl shadow border border-gray-100 p-6 text-center">
+          <div className="bg-black/50 rounded-3xl shadow border border-gray-100 p-6 text-center">
             <FaTint className="text-red-500 text-3xl mx-auto mb-3" />
             <h3 className="font-bold text-2xl">{bloodGroup}</h3>
             <p className="text-gray-500">Required Blood</p>
           </div>
 
-          <div className="bg-white rounded-3xl shadow border border-gray-100 p-6 text-center">
+          <div className="bg-black/50 rounded-3xl shadow border border-gray-100 p-6 text-center">
             <FaHospital className="text-green-600 text-3xl mx-auto mb-3" />
             <h3 className="font-bold">{hospitalName}</h3>
             <p className="text-gray-500">Hospital</p>
           </div>
 
-          <div className="bg-white rounded-3xl shadow border border-gray-100 p-6 text-center">
+          <div className="bg-black/50 rounded-3xl shadow border border-gray-100 p-6 text-center">
             <FaMapMarkerAlt className="text-red-500 text-3xl mx-auto mb-3" />
             <h3 className="font-bold">{districtName}</h3>
             <p className="text-gray-500">Location</p>

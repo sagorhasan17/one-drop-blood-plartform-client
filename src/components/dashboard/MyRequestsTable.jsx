@@ -4,7 +4,6 @@ import { Button, Chip, Table } from "@heroui/react";
 import Link from "next/link";
 import { FiEdit, FiEye, FiMail, FiUser } from "react-icons/fi";
 import { MdOutlineLocationOn } from "react-icons/md";
-import { DotDropDown } from "../shared/modal/DotDropDown";
 
 const statusColorMap = {
   Active: "success",
@@ -17,24 +16,6 @@ const statusColorMap = {
 };
 
 export default function MyRequestsTable({ users = [] }) {
-  const handleRoleChange = async (userId, role) => {
-    try {
-      await updateUserRole(userId, role);
-
-      setUserList((prev) =>
-        prev.map((user) =>
-          user._id === userId
-            ? {
-                ...user,
-                role,
-              }
-            : user,
-        ),
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div className="overflow-hidden rounded-3xl border border-default-200 bg-white shadow-sm">
       <Table>
@@ -73,7 +54,6 @@ export default function MyRequestsTable({ users = [] }) {
                       #{String(user._id || user.id).slice(-3)}
                     </span>
                   </Table.Cell>
-
                   <Table.Cell>
                     <div className="flex items-center gap-3">
                       {/* <Avatar
@@ -93,14 +73,12 @@ export default function MyRequestsTable({ users = [] }) {
                       </div>
                     </div>
                   </Table.Cell>
-
                   <Table.Cell>
                     <span className="text-sm text-default-700 flex items-center gap-2">
                       <FiMail size={16} className="text-red-500 font-bold" />
                       {user?.requesterEmail}
                     </span>
                   </Table.Cell>
-
                   <Table.Cell>
                     <span className="text-sm text-default-700 flex items-center gap-1">
                       <MdOutlineLocationOn
@@ -110,7 +88,6 @@ export default function MyRequestsTable({ users = [] }) {
                       {user?.districtName}
                     </span>
                   </Table.Cell>
-
                   <Table.Cell>
                     <Chip
                       color="danger"
@@ -121,7 +98,6 @@ export default function MyRequestsTable({ users = [] }) {
                       {user.bloodGroup}
                     </Chip>
                   </Table.Cell>
-
                   <Table.Cell>
                     <Chip
                       size="sm"
@@ -135,7 +111,6 @@ export default function MyRequestsTable({ users = [] }) {
                       {user.donationStatus || user.status}
                     </Chip>
                   </Table.Cell>
-
                   <Table.Cell>
                     <div className="flex justify-end gap-2">
                       <Link
@@ -162,11 +137,6 @@ export default function MyRequestsTable({ users = [] }) {
                           <FiEdit size={16} />
                         </Button>
                       </Link>
-
-                      <DotDropDown
-                        userId={user._id}
-                        onRoleChange={handleRoleChange}
-                      />
                     </div>
                   </Table.Cell>
                 </Table.Row>
