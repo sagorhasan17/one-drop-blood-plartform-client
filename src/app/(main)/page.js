@@ -1,56 +1,38 @@
 import Banner from "@/components/sections/banner/Banner";
 import HowItWorks from "@/components/sections/worksSection/HowItWorks";
+import { getAllDonorsRequest } from "@/lib/api/donor";
+import { getFundingHistory } from "@/lib/api/funding";
+import { getAllUsers } from "@/lib/api/users";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import RootLoadingPage from "../dashboard/loading";
 
 export default async function Home() {
-  // const usersRes = await getAllUsers();
-  // const requestsRes = await getAllDonorsRequest();
-  // const users = usersRes?.data || [];
-  // const totalUsers = users.length;
-  // const totalRequests = requestsRes.length;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const fundingHistory = await getFundingHistory();
+  const data = fundingHistory?.data;
+  const totalFundingAmount = data?.reduce((acc, item) => {
+    return acc + item.amount;
+  }, 0);
+  const usersRes = await getAllUsers(session?.session?.token);
+  const requestsRes = await getAllDonorsRequest(session?.session?.token);
 
-  // const totalDonors = users.filter((user) => user.role === "donor").length;
-  // const activeDonors = users.filter(
-  //   (user) => user.role === "donor" && user.status === "active",
-  // ).length;
+  if (!session) {
+    return <RootLoadingPage></RootLoadingPage>;
+  }
 
-  // const stats = [
-  //   {
-  //     title: "Total Users",
-  //     value: totalUsers,
-  //     icon: FaUsers,
-  //     growth: "+12%",
-  //     iconBg: "bg-red-100",
-  //     iconColor: "text-green-600",
-  //   },
-  //   {
-  //     title: "Blood Requests",
-  //     value: totalRequests,
-  //     icon: FaTint,
-  //     growth: "+8%",
-  //     iconBg: "bg-red-100",
-  //     iconColor: "text-red-600",
-  //   },
-  //   {
-  //     title: "Total Founding",
-  //     value: totalDonors,
-  //     icon: TbCoinTakaFilled,
-  //     growth: "+18%",
-  //     iconBg: "bg-green-100",
-  //     iconColor: "text-green-600",
-  //   },
-  //   {
-  //     title: "Active Donors",
-  //     value: activeDonors,
-  //     icon: FaUserCheck,
-  //     growth: "+6%",
-  //     iconBg: "bg-red-100",
-  //     iconColor: "text-green-600",
-  //   },
-  // ];
+  const totalUsers = usersRes?.data?.length;
+  const totalRequests = requestsRes?.length;
 
   return (
     <div>
-      <Banner />
+      <Banner
+        totalUsers={totalUsers}
+        totalRequests={totalRequests}
+        totalFundingAmount={totalFundingAmount}
+      />
       <HowItWorks />
     </div>
   );

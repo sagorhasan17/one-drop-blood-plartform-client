@@ -4,7 +4,7 @@ import { Button } from "@heroui/react";
 import Link from "next/link";
 import { FaHandHoldingHeart, FaHeart, FaTint, FaUsers } from "react-icons/fa";
 
-const Banner = () => {
+const Banner = ({ totalRequests, totalUsers, totalFundingAmount }) => {
   return (
     <section className="relative overflow-hidden">
       {/* Hero Section */}
@@ -54,7 +54,7 @@ const Banner = () => {
               </Button>
             </Link>
 
-            <Link href="/search">
+            {/* <Link href="/search">
               <Button
                 size="lg"
                 radius="full"
@@ -63,7 +63,7 @@ const Banner = () => {
               >
                 Find Donors
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
@@ -77,7 +77,9 @@ const Banner = () => {
               <FaUsers className="text-2xl text-red-500" />
             </div>
 
-            <h3 className="text-4xl font-bold text-white/40">500+</h3>
+            <h3 className="text-4xl font-bold text-white/80">
+              {totalUsers || 0}+
+            </h3>
 
             <p className="mt-2 text-gray-500">Active Donors</p>
           </div>
@@ -88,9 +90,11 @@ const Banner = () => {
               <FaHandHoldingHeart className="text-2xl text-red-500" />
             </div>
 
-            <h3 className="text-4xl font-bold text-white/40">1,200+</h3>
+            <h3 className="text-4xl font-bold text-white/80">
+              {totalFundingAmount || 0} $
+            </h3>
 
-            <p className="mt-2 text-gray-500">Lives Helped</p>
+            <p className="mt-2 text-gray-500">Total Funding</p>
           </div>
 
           {/* Card 3 */}
@@ -99,7 +103,9 @@ const Banner = () => {
               <FaTint className="text-2xl text-red-500" />
             </div>
 
-            <h3 className="text-4xl font-bold text-white/40">150+</h3>
+            <h3 className="text-4xl font-bold text-white/80">
+              {totalRequests || 0}+
+            </h3>
 
             <p className="mt-2 text-gray-500">Blood Requests</p>
           </div>
